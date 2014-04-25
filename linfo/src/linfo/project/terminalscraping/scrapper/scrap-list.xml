@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- scrap-list.xml -->
+
+<scrap-list>
+	<scrap item="VesselSchedule">vessel-schedule-list</scrap>
+</scrap-list>
