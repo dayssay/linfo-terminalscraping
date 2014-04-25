@@ -61,7 +61,7 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
         } 
 	}
 	
-	
+	@Override
 	protected String getVVDStatus(String pHtml) {
 		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split("#");
@@ -76,6 +76,7 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
 			return "STS";
 	}
 	
+	@Override
 	protected String getBerthNo(String pHtml) {
 		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
@@ -85,12 +86,13 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
 			return "BNO";
 	}
 	
-	
+	@Override
 	protected String getATD(String pHtml) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
+	@Override
 	protected String getATB(String pHtml) {
 		// TODO Auto-generated method stub
 		return null;
