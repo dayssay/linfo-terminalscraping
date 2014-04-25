@@ -65,6 +65,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
         } 
 	}
 	
+	@Override
 	protected String getINVVDforShippingCom(String pHtml) {
 		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split("/");
@@ -79,6 +80,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
 			return "INVVD";
 	}
 	
+	@Override
 	protected String getOUTVVDforShippingCom(String pHtml) {
 		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split("/");
@@ -93,13 +95,13 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
 			return "OUTVVD";
 	}
 	
-	
+	@Override
 	protected String getVVD(String pHtml) {
 		// TODO Auto-generated method stub
 		return pHtml.trim();
 	}
 	
-	
+	@Override
 	protected String getShiftCnt(String pHtml) {
 		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
@@ -109,6 +111,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
 			return "SHIFT";
 	}
 	
+	@Override
 	protected String getRoute(String pHtml) {
 		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split("[(]");
@@ -118,6 +121,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
 			return "ROU";
 	}
 	
+	@Override
 	protected String getLOADCnt(String pHtml) {
 		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
@@ -127,7 +131,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
 			return "LOAD";
 	}
 	
-	
+	@Override
 	protected String getETB(String pHtml) {
 		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
@@ -137,6 +141,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
 			return "ETB";
 	}
 	
+	@Override
 	protected String getDISCnt(String pHtml) {
 		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
@@ -146,7 +151,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
 			return "DIS";
 	}
 	
-	
+	@Override
 	protected String getBerthNo(String pHtml) {
 		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
@@ -156,12 +161,13 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
 			return "BNO";
 	}
 	
-	
+	@Override
 	protected String getATD(String pHtml) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
+	@Override
 	protected String getATB(String pHtml) {
 		// TODO Auto-generated method stub
 		return null;

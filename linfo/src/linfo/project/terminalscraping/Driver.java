@@ -6,10 +6,6 @@ import linfo.project.terminalscraping.vesselschedule.parser.VesselScheduleParser
 import linfo.project.terminalscraping.vesselschedule.parser.VesselScheduleParserFactory;
 
 public class Driver {
-	
-	
-	
-	
 	public static void main(String[] args){
 		Scraper s = new Scraper();
 		
@@ -22,11 +18,7 @@ public class Driver {
 					parser.SetBerthInfo(s.getHtml(t).toString());
 					System.out.println("==========================================================");
 				}
-				
 			}
 		}
 	}
-	
-	
-	
 }
