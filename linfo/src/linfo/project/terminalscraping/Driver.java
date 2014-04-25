@@ -12,9 +12,12 @@ public class Driver {
 		for(String item : s.getItems()){
 			int i = 0;
 			for(TerminalWebSite t : s.getTerminalList(item)){
+				//각 터미널 ID에 맞게 parser를 생성한다.
 				VesselScheduleParser parser = new VesselScheduleParserFactory().getParser(t.getId());
 				
 				if(parser != null){
+//					html 코드를 가져다가(s.getHtml)
+//					파서에 넣고 결과를 출력한다.
 					parser.SetBerthInfo(s.getHtml(t).toString());
 					System.out.println("==========================================================");
 				}
