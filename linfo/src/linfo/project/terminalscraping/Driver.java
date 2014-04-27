@@ -19,11 +19,8 @@ public class Driver {
 //					html 코드를 가져다가(s.getHtml)
 //					파서에 넣고 결과를 출력한다.
 					System.out.println("=====================" + t.getId() + "=====================================");
-					if(t.getId().equals("BIT"))
-					{
-//						System.out.println(s.getHtml(t).toString());
-						parser.SetBerthInfo(s.getHtml(t).toString());
-					}
+//					System.out.println(s.getHtml(t).toString());
+					parser.SetBerthInfo(s.getHtml(t).toString());
 				}
 			}
 		}
