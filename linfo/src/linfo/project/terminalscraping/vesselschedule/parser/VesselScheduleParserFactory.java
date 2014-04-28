@@ -8,6 +8,7 @@ public class VesselScheduleParserFactory {
 		
 		switch (Terminal.valueOf(id)){
 			case BIT:
+				vsParser = new BITVesselScheduleParser();
 				break;
 			
 			case BNCT:
