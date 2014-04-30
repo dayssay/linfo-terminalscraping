@@ -2,21 +2,13 @@ package linfo.project.terminalscraping.scrapper;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import linfo.project.terminalscraping.objects.TerminalWebSite;
 import linfo.project.util.Util;
@@ -30,7 +22,6 @@ public class Scraper {
 	private final String TERMINAL_LIST_FILE_NAME = "terminal-list.xml";
 	
 	private HashMap<String, String>items;
-	private String currentItem;
 	ArrayList<TerminalWebSite> terminalList;
 	private String filePath;
 	
@@ -41,7 +32,6 @@ public class Scraper {
 		
 		items = new HashMap<>();
 		terminalList = new ArrayList<>();
-		currentItem = "";
 		this.setItems();
 	}
 	

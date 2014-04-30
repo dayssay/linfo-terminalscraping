@@ -10,6 +10,7 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 	private String g_sPlan = "333333";		// 접안전
 	private String g_sCancel = "";			// 전배
 	
+	@Override
 	public void SetBerthInfo(String pHtml){
         BufferedReader buffer;
         

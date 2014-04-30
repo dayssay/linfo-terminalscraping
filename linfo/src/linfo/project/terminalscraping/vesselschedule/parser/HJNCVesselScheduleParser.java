@@ -8,6 +8,7 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
 	private String g_sBerth = "FFCCCC";
 	private String g_sDepart = "CCFFCC";
 	
+	@Override
 	public void SetBerthInfo(String pHtml){
         BufferedReader buffer;
         
