@@ -5,11 +5,15 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -97,6 +101,11 @@ public class Scraper {
 					t.setEncoding(encodingElement.getTextContent());
 				}
 				
+				if(terminalElement.getElementsByTagName("cookie-url").getLength() > 0){
+					Element encodingElement = (Element)terminalElement.getElementsByTagName("cookie-url").item(0);
+					t.setCookieUrl(encodingElement.getTextContent());
+				}
+				
 				NodeList paramNode = terminalElement.getElementsByTagName("param");
 				for(int j = 0; j < paramNode.getLength() ; j++){
 					Element paramElement = (Element)paramNode.item(j);
@@ -135,18 +144,47 @@ public class Scraper {
 	    HttpURLConnection connection = null;  
 	    
 	    try {
-	      //Create connection
 	    	url = new URL(terminal.getUrl());
 	    	connection = (HttpURLConnection)url.openConnection();
+	    	
 	    	connection.setRequestMethod("POST");
 	    	connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 	        connection.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
-	          
+	        
+	        
+	        if(terminal.getCookieUrl() != null && terminal.getCookieUrl().length() > 0){
+	        	URL cookieUrl = new URL(terminal.getCookieUrl());
+		    	HttpURLConnection cookieCon = (HttpURLConnection) cookieUrl.openConnection();
+		    	cookieCon.connect();
+		    	
+		    	StringBuilder sb = new StringBuilder();
+
+		    	// find the cookies in the response header from the first request
+		    	List<String> cookies = cookieCon.getHeaderFields().get("Set-Cookie");
+		    	if (cookies != null) {
+		    	    for (String cookie : cookies) {
+		    	        if (sb.length() > 0) {
+		    	            sb.append("; ");
+		    	        }
+
+		    	        // only want the first part of the cookie header that has the value
+		    	        String value = cookie.split(";")[0];
+		    	        sb.append(value);
+		    	    }
+		    	}
+
+		    	// build request cookie header to send on all subsequent requests
+		    	String cookieHeader = sb.toString();
+		    	cookieCon.disconnect();
+		    	connection.setRequestProperty("Cookie", cookieHeader);
+	        }
+	        
+	        
 	    	ArrayList<String> requestParameters = Util.getKeyList(terminal.getReqeustProperty());
 	    	for(String requestParameter : requestParameters){
 	    		connection.setRequestProperty(requestParameter, terminal.getReqeustProperty().get(requestParameter));
 	    	}
-
+	        
 	    	connection.setUseCaches (false);
 	    	connection.setDoInput(true);
 	    	connection.setDoOutput(true);

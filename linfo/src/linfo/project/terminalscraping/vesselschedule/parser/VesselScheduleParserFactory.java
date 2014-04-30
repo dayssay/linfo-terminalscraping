@@ -38,6 +38,7 @@ public class VesselScheduleParserFactory {
 				break;
 				
 			case KBCT:
+				vsParser = new KBCTVesselScheduleParser();
 				break;
 		}
 		
