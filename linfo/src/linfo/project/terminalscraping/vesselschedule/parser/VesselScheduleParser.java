@@ -1,7 +1,12 @@
 package linfo.project.terminalscraping.vesselschedule.parser;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class VesselScheduleParser{
 	public void SetBerthInfo(String html){}
+	
+	
 	
 	
 	private String getData(String html){
@@ -10,6 +15,17 @@ public class VesselScheduleParser{
 			return (sTemp[1].split("<"))[0].trim();
 		else
 			return "!!NONE!!";
+	}
+	
+	
+	public String removeTags(String html){
+		String result = "";
+		
+		Pattern tag = Pattern.compile("<(\"[^\"]*\"|\'[^\']*\'|[^\'\">])*>");  
+		Matcher mat = tag.matcher(html);  
+		result = mat.replaceAll(""); 
+		
+		return result;
 	}
 
 	protected String getBerthNo(String html) {
