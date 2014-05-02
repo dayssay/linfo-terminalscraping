@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 
 public class PNITVesselScheduleParser extends VesselScheduleParser{
+	@Override
 	public void SetBerthInfo(String pHtml){
         BufferedReader buffer;
         

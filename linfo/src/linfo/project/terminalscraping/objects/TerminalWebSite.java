@@ -9,6 +9,7 @@ public class TerminalWebSite {
 	private String terminalName;
 	private String url;
 	private String encoding;
+	private String cookieUrl;
 	private HashMap<String, String> param;
 	private HashMap<String, String> reqeustProperty;
 	
@@ -44,6 +45,12 @@ public class TerminalWebSite {
 	}
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
+	}
+	public String getCookieUrl() {
+		return cookieUrl;
+	}
+	public void setCookieUrl(String cookieUrl) {
+		this.cookieUrl = cookieUrl;
 	}
 	public HashMap<String, String> getParam() {
 		return param;

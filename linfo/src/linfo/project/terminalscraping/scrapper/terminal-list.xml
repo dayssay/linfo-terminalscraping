@@ -62,6 +62,6 @@
 		<encoding>euc-kr</encoding>
 		<param key="v_time">3days</param>
 		<param key="ORDER">item2</param>
-		<request-property key="Cookie">JSESSIONID=0000UBdTz9Bwxet6SEPEfMXGfro:-1</request-property>
+		<cookie-url>http://www.kbct.co.kr/content/sw/frame/berth_status_text_frame_sw_kr.jsp?p_id=CONT_CN_KR&amp;search=Y&amp;snb_num=2</cookie-url>
 	</terminal>
 </vessel-schedule-list>

@@ -10,6 +10,7 @@ public class HPNTVesselScheduleParser extends VesselScheduleParser{
 	private String g_sPlan = "6FB7E9";
 	private String g_sRealPlan = "9DCEFF";
 	
+	@Override
 	public void SetBerthInfo(String pHtml){
         BufferedReader buffer;
         

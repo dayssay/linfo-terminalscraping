@@ -9,6 +9,7 @@ public class PNCVesselScheduleParser extends VesselScheduleParser{
 	private String g_sDepart = "F2E3ED";
 	private String g_sPlan = "FFFFFF";
 	
+	@Override
 	public void SetBerthInfo(String pHtml){
         BufferedReader buffer;
         
