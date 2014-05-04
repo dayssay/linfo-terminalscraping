@@ -16,6 +16,7 @@ public class VesselScheduleParserFactory {
 				break;
 			
 			case DPCT:
+				vsParser = new DPCTVesselScheduleParser();
 				break;
 			
 			case HJNC:
@@ -23,6 +24,7 @@ public class VesselScheduleParserFactory {
 				break;
 			
 			case HKTL:
+				vsParser = new HKTLVesselScheduleParser();
 				break;
 			
 			case PNC:
