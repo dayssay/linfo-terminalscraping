@@ -3,7 +3,6 @@ package linfo.project.terminalscraping.objects;
 import java.util.HashMap;
 
 // Terminal Web Site
-// KSC Comment
 public class TerminalWebSite {
 	private String id;
 	private String terminalName;

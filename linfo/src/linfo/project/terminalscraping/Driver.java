@@ -11,12 +11,12 @@ public class Driver {
 		
 		for(String item : s.getItems()){
 			for(TerminalWebSite t : s.getTerminalList(item)){
-				//°¢ ÅÍ¹Ì³Î ID¿¡ ¸Â°Ô parser¸¦ »ý¼ºÇÑ´Ù.
+				//ï¿½ï¿½ ï¿½Í¹Ì³ï¿½ IDï¿½ï¿½ ï¿½Â°ï¿½ parserï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½.
 				VesselScheduleParser parser = new VesselScheduleParserFactory().getParser(t.getId());
 				
-				if(parser != null && ( t.getId().equals("KBCT") )){
-//					html ÄÚµå¸¦ °¡Á®´Ù°¡(s.getHtml)
-//					ÆÄ¼­¿¡ ³Ö°í °á°ú¸¦ Ãâ·ÂÇÑ´Ù.
+				if(parser != null && t.getId().equals("PNIT")){
+//					html ï¿½Úµå¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½Ù°ï¿½(s.getHtml)
+//					ï¿½Ä¼ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 					System.out.println("=====================" + t.getId() + "=====================================");
 //					System.out.println(s.getHtml(t).toString());
 					parser.SetBerthInfo(s.getHtml(t).toString());

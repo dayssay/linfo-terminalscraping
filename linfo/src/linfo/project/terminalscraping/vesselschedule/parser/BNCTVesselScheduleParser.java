@@ -2,12 +2,17 @@ package linfo.project.terminalscraping.vesselschedule.parser;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.ArrayList;
+
+import linfo.project.terminalscraping.objects.VesselSchedule;
+import linfo.project.terminalscraping.objects.VesselSchedule.VVD_STATUS;
+import linfo.project.util.Util;
 
 public class BNCTVesselScheduleParser extends VesselScheduleParser{
 	
 	@Override
-	public void SetBerthInfo(String pHtml){
-        BufferedReader buffer;
+	public void SetBerthInfo(String pHtml) {
+		BufferedReader buffer;
         
         try
         {
@@ -17,7 +22,6 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
             
             String line;
             int iStart = 0;
-//            int iRow = 0;
             boolean bStart = false;
             
             while((line = buffer.readLine()) != null){
@@ -29,7 +33,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
             		if(line.contains("<table"))
             			iStart++;
             		
-            		// ³ªÁß¿¡ ÇÑ±Û Á¦´ë·Î ³ª¿À¸é ¹Ù²ã¾ß ÇÒ ºÎºÐ...
+            		// ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½Ñ±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½ï¿½ ï¿½Îºï¿½...
             		if(iStart == 3){
             			if(line.contains("td") && (line.contains("#F5F5F5") || line.contains("#EFFBF3") || line.contains("#FEDFDF"))){
             				
@@ -62,10 +66,88 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
         }
         catch (Exception e)
         {
-        	e.printStackTrace();
+        	Util.exceptionProc(e);
         } 
 	}
+
+
 	
+	
+	@Override
+	public ArrayList<VesselSchedule> extractVesselSchedule(String html) {
+		ArrayList<VesselSchedule> vesselScheduleList = new ArrayList<>();
+		BufferedReader buffer;
+        
+        try
+        {
+            StringReader sr = new StringReader(html);
+				
+            buffer = new BufferedReader(sr);
+            
+            String line;
+            int iStart = 0;
+            boolean bStart = false;
+            
+            while((line = buffer.readLine()) != null){
+            	if(line.contains("CONTENTS")){
+            		bStart = true;
+            	}
+            	
+            	if(bStart){
+            		if(line.contains("<table"))
+            			iStart++;
+            		
+            		// ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½Ñ±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½ï¿½ ï¿½Îºï¿½...
+            		if(iStart == 3){
+            			if(line.contains("td") && (line.contains("#F5F5F5") || line.contains("#EFFBF3") || line.contains("#FEDFDF"))){
+            				VesselSchedule vs = new VesselSchedule();
+            				vs.setBerthNo(getBerthNo(line));
+        					vs.setOpr(getOPR(buffer.readLine()));
+        					buffer.readLine();
+        					vs.setVvd(getVVD(buffer.readLine()));
+        					String sINOUTVVD = buffer.readLine();
+        					vs.setInVvdForShippingCom(getINVVDforShippingCom(sINOUTVVD));
+        					vs.setOutVvdForShippingCom(getOUTVVDforShippingCom(sINOUTVVD));
+        					buffer.readLine();
+        					buffer.readLine();
+        					String sVVDInfo = buffer.readLine();
+        					vs.setVslName(getVSLName(sVVDInfo));
+        					vs.setRoute(getRoute(sVVDInfo));
+        					vs.setCct(getCCT(buffer.readLine()));
+        					vs.setEtb(getETB(buffer.readLine()));
+        					vs.setEtd(getETD(buffer.readLine()));
+        					String sJobCnt = buffer.readLine();
+        					vs.setLoadCnt(Integer.parseInt(getLOADCnt(sJobCnt)));
+        					vs.setDisCnt(Integer.parseInt(getDISCnt(sJobCnt)));
+        					vs.setShiftCnt(Integer.parseInt(getShiftCnt(sJobCnt)));
+        					buffer.readLine();
+        					String vvdStatus = buffer.readLine();
+        					if (vvdStatus.equals("DEPARTED")){
+        						vs.setVvdStatus(VVD_STATUS.DEPARTED);
+        					}else if (vvdStatus.equals("ARRIVED")){
+        						vs.setVvdStatus(VVD_STATUS.BERTHING);
+        					}else if (vvdStatus.equals("PLANNED")){
+        						vs.setVvdStatus(VVD_STATUS.PLANNED);
+        					}else {
+        						vs.setVvdStatus(VVD_STATUS.UNKNOWN);
+        					}
+        					vesselScheduleList.add(vs);
+            			}
+            		}
+            	}
+            }
+        }
+        catch (Exception e)
+        {
+        	Util.exceptionProc(e);
+        }
+        
+        return vesselScheduleList;
+	}
+	
+	
+
+
 	@Override
 	protected String getINVVDforShippingCom(String pHtml) {
 		// TODO Auto-generated method stub
@@ -137,7 +219,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
 		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
 		if(sTemp.length > 1)
-			return (sTemp[1].split("<"))[0];
+			return (sTemp[1].split("<"))[0].replace("/", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
 			return "ETB";
 	}

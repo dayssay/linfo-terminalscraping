@@ -178,7 +178,8 @@ public class Scraper {
 	    	connection.setUseCaches (false);
 	    	connection.setDoInput(true);
 	    	connection.setDoOutput(true);
-
+	    	connection.setConnectTimeout(15000);
+	    	
 	    	//Send request
 	    	DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
 	    	wr.writeBytes(urlParameters);

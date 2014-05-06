@@ -2,6 +2,11 @@ package linfo.project.terminalscraping.vesselschedule.parser;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.ArrayList;
+
+import linfo.project.terminalscraping.objects.VesselSchedule;
+import linfo.project.terminalscraping.objects.VesselSchedule.VVD_STATUS;
+import linfo.project.util.Util;
 
 public class HPNTVesselScheduleParser extends VesselScheduleParser{
 
@@ -59,13 +64,91 @@ public class HPNTVesselScheduleParser extends VesselScheduleParser{
             		}
             	}
             }
-        }
-        catch (Exception e)
-        {
-        	e.printStackTrace();
+        }catch (Exception e){
+        	Util.exceptionProc(e);
         } 
 	}
 	
+	
+	
+	
+	
+	
+	@Override
+	public ArrayList<VesselSchedule> extractVesselSchedule(String html) {
+		ArrayList<VesselSchedule> vesselScheduleList = new ArrayList<>();
+		BufferedReader buffer;
+        
+        try{
+            StringReader sr = new StringReader(html);
+            buffer = new BufferedReader(sr);
+            
+            String line;
+            int iStart = 0;
+            
+            while((line = buffer.readLine()) != null){
+            	if(line.contains(g_sBerth) || line.contains(g_sDepart) || line.contains(g_sPlan) || line.contains(g_sRealPlan)){
+
+            		if(iStart < 1){
+            			buffer.readLine();
+            			buffer.readLine();
+            		}
+            		
+            		iStart++;
+            		
+            		if (iStart > 1)
+            		{
+            			VesselSchedule vs = new VesselSchedule();
+            			
+            			buffer.readLine();
+            			String vvdStatus = getVVDStatus(buffer.readLine());
+            			if (vvdStatus.contains("DEPART")){
+            				vs.setVvdStatus(VVD_STATUS.DEPARTED);
+            			}else if (vvdStatus.contains("BERTH")){
+            				vs.setVvdStatus(VVD_STATUS.BERTHING);
+            			}else if (vvdStatus.contains("PLAN")){
+            				vs.setVvdStatus(VVD_STATUS.PLANNED);
+            			}else {
+            				vs.setVvdStatus(VVD_STATUS.UNKNOWN);
+            			}
+            			
+            			buffer.readLine();
+            			vs.setBerthNo(getBerthNo(buffer.readLine()));
+            			vs.setOpr(getOPR(buffer.readLine()));
+            			vs.setVvd(getVVD(buffer.readLine()));
+            			
+            			String sINOUTVVD = buffer.readLine();
+            			vs.setInVvdForShippingCom(getINVVDforShippingCom(sINOUTVVD));
+            			vs.setOutVvdForShippingCom(getOUTVVDforShippingCom(sINOUTVVD));
+            			vs.setVslName(getVSLName(buffer.readLine()));
+            			vs.setCct(getCCT(buffer.readLine()));
+    					buffer.readLine();
+    					buffer.readLine();
+    					buffer.readLine();
+    					vs.setEtb(getETB(buffer.readLine()));
+    					vs.setEtd(getETD(buffer.readLine()));
+    					String sJobCnt = buffer.readLine();
+    					vs.setDisCnt(Integer.parseInt(getDISCnt(sJobCnt)));
+    					vs.setLoadCnt(Integer.parseInt(getLOADCnt(sJobCnt)));
+    					vs.setShiftCnt(Integer.parseInt(getShiftCnt(sJobCnt)));
+    					vs.setRoute(getRoute(buffer.readLine()));
+    					vesselScheduleList.add(vs);
+            		}
+            	}
+            }
+        }catch (Exception e){
+        	Util.exceptionProc(e);
+        } 
+		
+		
+		return vesselScheduleList;
+	}
+
+
+
+
+
+
 	@Override
 	protected String getINVVDforShippingCom(String pHtml) {
 		// TODO Auto-generated method stub
