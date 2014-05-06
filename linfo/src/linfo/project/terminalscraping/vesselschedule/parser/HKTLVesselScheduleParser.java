@@ -2,6 +2,10 @@ package linfo.project.terminalscraping.vesselschedule.parser;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.ArrayList;
+
+import linfo.project.terminalscraping.objects.VesselSchedule;
+import linfo.project.util.Util;
 
 public class HKTLVesselScheduleParser extends VesselScheduleParser{
 	@Override
@@ -15,8 +19,6 @@ public class HKTLVesselScheduleParser extends VesselScheduleParser{
             buffer = new BufferedReader(sr);
             
             String line;
-            
-            boolean bStart = false;
             
             while((line = buffer.readLine()) != null){
             	if(line.contains("list_td8")){
@@ -111,10 +113,8 @@ public class HKTLVesselScheduleParser extends VesselScheduleParser{
             	
             	
             }
-        }
-        catch (Exception e)
-        {
-        	e.printStackTrace();
+        }catch (Exception e){
+        	Util.exceptionProc(e);
         } 
 	}
 	
@@ -122,9 +122,112 @@ public class HKTLVesselScheduleParser extends VesselScheduleParser{
 	
 	
 	
+
+	@Override
+	public ArrayList<VesselSchedule> extractVesselSchedule(String html) {
+		ArrayList<VesselSchedule> vesselScheduleList = new ArrayList<>();
+		BufferedReader buffer;
+        
+        try{
+            StringReader sr = new StringReader(html);
+				
+            buffer = new BufferedReader(sr);
+            
+            String line;
+            
+             while((line = buffer.readLine()) != null){
+            	if(line.contains("list_td8")){
+            		break;
+            	}
+            }
+            
+            while((line = buffer.readLine()) != null){
+            	if(line.contains("</tr>")){
+            		break;
+            	}
+            }
+            
+            while((line = buffer.readLine()) != null){
+            	if(line.contains("</TABLE>")){
+            		break;
+            	}
+            	
+            	if(line.contains("<tr")){
+            		int dataIndex = 0;
+            		boolean isVessel = false;
+            		VesselSchedule vs = new VesselSchedule();
+            		
+            		while(!(line = buffer.readLine().trim()).contains("</tr")){
+            			if(line.trim().contains("<td")){
+            				isVessel = true;
+	            			switch(dataIndex){
+		            			case 0:
+		            				vs.setVvd(this.getVVD(line));
+		            				dataIndex++;
+		            				break;
+		            			case 1:
+		            				dataIndex++;
+		            				break;
+		            			case 2:
+		            				vs.setBerthNo(this.getBerthNo(line));
+		            				dataIndex++;
+		            				break;
+		            			case 3:
+		            				dataIndex++;
+		            				break;
+		            			case 4:
+		            				vs.setEtb(this.getETB(line));
+		            				dataIndex++;
+		            				break;
+		            			case 5:
+		            				dataIndex++;
+		            				break;
+		            			case 6:
+		            				vs.setEtd(this.getETD(line));
+		            				dataIndex++;
+		            				break;
+		            			case 7:
+		            				vs.setCct(this.getCCT(line));
+		            				dataIndex++;
+		            				break;
+		            			case 8:
+		            				dataIndex++;
+		            				break;
+		            			case 9:
+		            				vs.setLoadCnt(Integer.parseInt(this.getLOADCnt(line)));
+		            				vs.setDisCnt(Integer.parseInt(this.getDISCnt(line)));
+		            				dataIndex++;
+		            				break;
+		            			case 10:
+		            				vs.setVslName(this.getVSLName(line));
+		            				dataIndex++;
+		            				break;
+		            			case 11:
+		            				vs.setOpr(this.getOPR(line));
+		            				dataIndex++;
+		            				break;
+	            			}
+            			}
+            		}
+            		if (isVessel){
+            			vesselScheduleList.add(vs);	
+            		}
+            	}
+            	
+            	
+            }
+        }catch (Exception e){
+        	Util.exceptionProc(e);
+        } 
+		
+		
+		return vesselScheduleList;
+	}
 	
-
-
+	
+	
+	
+	
 	@Override
 	protected String getBerthNo(String html) {
 		// TODO Auto-generated method stub
@@ -177,35 +280,35 @@ public class HKTLVesselScheduleParser extends VesselScheduleParser{
 	@Override
 	protected String getCCT(String html) {
 		// TODO Auto-generated method stub
-		return super.removeTags(html);
+		return !super.removeTags(html).trim().equals("")?super.removeTags(html).replace("/", "").replace(":", "").replace(" ", "").substring(0, 12):"";
 	}
 
 
 	@Override
 	protected String getETB(String html) {
 		// TODO Auto-generated method stub
-		return super.removeTags(html);
+		return !super.removeTags(html).trim().equals("")?super.removeTags(html).replace("/", "").replace(":", "").replace(" ", "").substring(0, 12):"";
 	}
 
 	
 	@Override
 	protected String getETD(String html) {
 		// TODO Auto-generated method stub
-		return super.removeTags(html);
+		return !super.removeTags(html).trim().equals("")?super.removeTags(html).replace("/", "").replace(":", "").replace(" ", "").substring(0, 12):"";
 	}
 
 
 	@Override
 	protected String getATB(String html) {
 		// TODO Auto-generated method stub
-		return super.removeTags(html);
+		return !super.removeTags(html).trim().equals("")?super.removeTags(html).replace("/", "").replace(":", "").replace(" ", "").substring(0, 12):"";
 	}
 
 
 	@Override
 	protected String getATD(String html) {
 		// TODO Auto-generated method stub
-		return super.removeTags(html);
+		return !super.removeTags(html).trim().equals("")?super.removeTags(html).replace("/", "").replace(":", "").replace(" ", "").substring(0, 12):"";
 	}
 
 

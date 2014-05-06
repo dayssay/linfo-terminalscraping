@@ -1,12 +1,18 @@
 package linfo.project.terminalscraping.vesselschedule.parser;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import linfo.project.terminalscraping.objects.VesselSchedule;
 
 public class VesselScheduleParser{
 	public void SetBerthInfo(String html){}
 	
 	
+	public ArrayList<VesselSchedule> extractVesselSchedule(String html){
+		return new ArrayList<>();
+	}
 	
 	
 	private String getData(String html){
@@ -38,22 +44,22 @@ public class VesselScheduleParser{
 		return getData(html);
 	}
 
-	// Ç×Â÷
+	// ï¿½ï¿½ï¿½ï¿½
 	protected String getVVD(String html) {
 		return getData(html);
 	}
 
-	// ¼±»ç In Ç×Â÷
+	// ï¿½ï¿½ï¿½ï¿½ In ï¿½ï¿½ï¿½ï¿½
 	protected String getINVVDforShippingCom(String html) {
 		return getData(html);
 	}
 
-	// ¼±»ç Out Ç×Â÷
+	// ï¿½ï¿½ï¿½ï¿½ Out ï¿½ï¿½ï¿½ï¿½
 	protected String getOUTVVDforShippingCom(String html) {
 		return getData(html);
 	}
 
-	// ¼±¹Ú¸í
+	// ï¿½ï¿½ï¿½Ú¸ï¿½
 	protected String getVSLName(String html) {
 		return getData(html);
 	}
@@ -63,47 +69,67 @@ public class VesselScheduleParser{
 		return getData(html);
 	}
 
-	// Cargo Closing Time(¹ÝÀÔ ¸¶°¨½Ã°£)
+	// Cargo Closing Time(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½)
 	protected String getCCT(String html) {
-		return getData(html);
+		if (getData(html).trim().equals("")){
+			return "";
+		}else{
+			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12);
+		}
 	}
 
-	// Expected Time of Berthing(ÀÔÇ× ¿¹Á¤½Ã°£)
+	// Expected Time of Berthing(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½)
 	protected String getETB(String html) {
-		return getData(html);
+		if (getData(html).trim().equals("")){
+			return "";
+		}else{
+			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12);
+		}
 	}
 
-	// Expected Time of Departure(ÃâÇÒ ¿¹Á¤ ½Ã°£)
+	// Expected Time of Departure(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½)
 	protected String getETD(String html) {
-		return getData(html);
+		if (getData(html).trim().equals("")){
+			return "";
+		}else{
+			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12);
+		}
 	}
 
-	// Actual Time of Berthing(½ÇÁ¦ ÀÔÇ× ½Ã°£)
+	// Actual Time of Berthing(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½)
 	protected String getATB(String html) {
-		return getData(html);
+		if (getData(html).trim().equals("")){
+			return "";
+		}else{
+			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12);
+		}
 	}
 
-	// Actual Time of Departure(½ÇÁ¦ ÃâÇ× ½Ã°£)
+	// Actual Time of Departure(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½)
 	protected String getATD(String html) {
-		return getData(html);
+		if (getData(html).trim().equals("")){
+			return "";
+		}else{
+			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12);
+		}
 	}
 
-	// ¼±Àû ¹°·®
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	protected String getLOADCnt(String html) {
 		return getData(html);
 	}
 
-	// ¾çÇÏ ¹°·®
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	protected String getDISCnt(String html) {
 		return getData(html);
 	}
 
-	// Shifting ¹°·®
+	// Shifting ï¿½ï¿½ï¿½ï¿½
 	protected String getShiftCnt(String html) {
 		return getData(html);
 	}
 
-	// Á¢¾È »óÅÂ(Á¢¾ÈÀü, Á¢¾ÈÁß, ÃâÇ×)
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½)
 	protected String getVVDStatus(String html) {
 		return getData(html);
 	}

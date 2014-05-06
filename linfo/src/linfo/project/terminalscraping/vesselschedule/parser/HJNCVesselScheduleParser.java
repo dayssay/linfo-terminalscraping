@@ -2,6 +2,10 @@ package linfo.project.terminalscraping.vesselschedule.parser;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.ArrayList;
+
+import linfo.project.terminalscraping.objects.VesselSchedule;
+import linfo.project.util.Util;
 
 public class HJNCVesselScheduleParser extends VesselScheduleParser{
 
@@ -55,13 +59,77 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
             		}
             	}
             }
-        }
-        catch (Exception e)
-        {
-        	e.printStackTrace();
+        }catch (Exception e){
+        	Util.exceptionProc(e);
         } 
 	}
 	
+	
+	
+	
+	
+	@Override
+	public ArrayList<VesselSchedule> extractVesselSchedule(String html) {
+		ArrayList<VesselSchedule> vesselScheduleList = new ArrayList<>();
+		BufferedReader buffer;
+        
+        try
+        {
+            StringReader sr = new StringReader(html);
+            buffer = new BufferedReader(sr);
+            
+            String line;
+            int iStart = 0;
+            
+            while((line = buffer.readLine()) != null){
+            	if(line.contains("#FFCCCC") || line.contains("#FFFFFF") || line.contains("#CCFFCC")){
+
+            		iStart++;
+            		
+            		if (iStart > 3){
+            			VesselSchedule vs = new VesselSchedule();
+            			
+            			vs.setVvd(getVVD(line));
+            			vs.setVslName(getVSLName(buffer.readLine()));
+            			buffer.readLine();
+            			vs.setOpr(getOPR(buffer.readLine()));
+    					buffer.readLine();
+    					vs.setInVvdForShippingCom(getINVVDforShippingCom(buffer.readLine()));
+    					buffer.readLine();
+    					vs.setOutVvdForShippingCom(getOUTVVDforShippingCom(buffer.readLine()));
+    					buffer.readLine();
+    					vs.setCct(getCCT(buffer.readLine()));
+    					buffer.readLine();
+    					vs.setEtb(getETB(buffer.readLine()));
+    					buffer.readLine();
+    					vs.setEtd(getETD(buffer.readLine()));
+    					buffer.readLine();
+    					vs.setDisCnt(Integer.parseInt(getDISCnt(buffer.readLine())));
+    					buffer.readLine();
+    					vs.setLoadCnt(Integer.parseInt(getLOADCnt(buffer.readLine())));
+    					buffer.readLine();
+    					vs.setShiftCnt(Integer.parseInt(getShiftCnt(buffer.readLine())));
+    					buffer.readLine();
+    					vs.setBerthNo(getBerthNo(buffer.readLine()));
+    					buffer.readLine();
+    					vs.setRoute(getRoute(buffer.readLine()));
+    					
+    					vesselScheduleList.add(vs);
+    					System.out.println("");
+            		}
+            	}
+            }
+        }catch (Exception e){
+        	Util.exceptionProc(e);
+        } 
+		
+		return vesselScheduleList;
+	}
+
+
+
+
+
 	@Override
 	protected String getVVDStatus(String pHtml) {
 		// TODO Auto-generated method stub
@@ -98,4 +166,11 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	protected String getShiftCnt(String html) {
+		return super.getShiftCnt(html).equals("&nbsp;")?"0":super.getShiftCnt(html);
+	}
+	
+	
 }

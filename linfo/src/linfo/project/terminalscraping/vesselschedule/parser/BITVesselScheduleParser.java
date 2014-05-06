@@ -2,13 +2,18 @@ package linfo.project.terminalscraping.vesselschedule.parser;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.ArrayList;
+
+import linfo.project.terminalscraping.objects.VesselSchedule;
+import linfo.project.terminalscraping.objects.VesselSchedule.VVD_STATUS;
+import linfo.project.util.Util;
 
 public class BITVesselScheduleParser extends VesselScheduleParser{
 	
-	private String g_sBerth = "CC0033";		// Á¢¾ÈÁß
-	private String g_sDepart = "0066CC";	// ÃâÇ×
-	private String g_sPlan = "333333";		// Á¢¾ÈÀü
-	private String g_sCancel = "";			// Àü¹è
+//	private String g_sBerth = "CC0033";		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//	private String g_sDepart = "0066CC";	// ï¿½ï¿½ï¿½ï¿½
+//	private String g_sPlan = "333333";		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//	private String g_sCancel = "";			// ï¿½ï¿½ï¿½
 	
 	@Override
 	public void SetBerthInfo(String pHtml){
@@ -23,8 +28,8 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
             int iStart = 0;
             
             while((line = buffer.readLine()) != null){
-            	if(line.contains("Á¢¾ÈÁß") || line.contains("ÃâÇ×") || line.contains("Á¢¾È¿¹Á¤")){
-
+//            	if(line.contains("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½") || line.contains("ï¿½ï¿½ï¿½ï¿½") || line.contains("ï¿½ï¿½ï¿½È¿ï¿½ï¿½ï¿½")){
+            	if(line.contains("ì¶œí•­") || line.contains("ì ‘ì•ˆì¤‘") || line.contains("ì ‘ì•ˆì˜ˆì •")){
             		if(iStart < 1){
             			buffer.readLine();
             		}
@@ -82,9 +87,102 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
         }
         catch (Exception e)
         {
-        	e.printStackTrace();
+        	Util.exceptionProc(e);
         } 
 	}
+	
+	
+	@Override
+	public ArrayList<VesselSchedule> extractVesselSchedule(String html) {
+		ArrayList<VesselSchedule> vesselScheduleList = new ArrayList<>();
+		BufferedReader buffer;
+        
+        try
+        {
+            StringReader sr = new StringReader(html);
+            buffer = new BufferedReader(sr);
+            
+            String line;
+            int iStart = 0;
+            
+            while((line = buffer.readLine()) != null){
+//            	if(line.contains("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½") || line.contains("ï¿½ï¿½ï¿½ï¿½") || line.contains("ï¿½ï¿½ï¿½È¿ï¿½ï¿½ï¿½")){
+            	if(line.contains("ì¶œí•­") || line.contains("ì ‘ì•ˆì¤‘") || line.contains("ì ‘ì•ˆì˜ˆì •")){
+            		if(iStart < 1){
+            			buffer.readLine();
+            		}
+            		
+            		iStart++;
+            		
+            		if (iStart > 1){
+            			VesselSchedule vs = new VesselSchedule();
+            			
+            			buffer.readLine();
+            			String sInfo = buffer.readLine();
+            			
+            			if (getVVDStatus(sInfo).contains("ì¶œí•­")){
+            				vs.setVvdStatus(VVD_STATUS.DEPARTED);
+            			}else if (getVVDStatus(sInfo).contains("ì ‘ì•ˆì¤‘")){
+            				vs.setVvdStatus(VVD_STATUS.BERTHING);
+            			}else if (getVVDStatus(sInfo).contains("ì ‘ì•ˆì˜ˆì •")){
+            				vs.setVvdStatus(VVD_STATUS.PLANNED);
+            			}else{
+            				vs.setVvdStatus(VVD_STATUS.UNKNOWN);
+            			}
+            			
+            			vs.setOpr(getOPR(sInfo));
+            			vs.setVvd(getVVD(sInfo));
+            			
+            			buffer.readLine();
+            			vs.setVslName(getVSLName(buffer.readLine()));
+            			            			
+            			buffer.readLine();
+            			String sChkEmptyLine = buffer.readLine();
+            			if(sChkEmptyLine.trim().length() < 1){
+            				vs.setEtb(getETB(buffer.readLine()));
+            			}else{
+            				vs.setEtb(getETB(sChkEmptyLine));
+            			}
+            				
+            			
+            			buffer.readLine();
+            			vs.setEtd(getETD(buffer.readLine()));
+            			buffer.readLine();
+            			vs.setCct(getCCT(buffer.readLine()));
+            			
+            			buffer.readLine();
+            			vs.setInVvdForShippingCom(getINVVDforShippingCom(buffer.readLine()));
+            			buffer.readLine();
+            			vs.setOutVvdForShippingCom(getOUTVVDforShippingCom(buffer.readLine()));
+    					buffer.readLine();
+    					vs.setBerthNo(getBerthNo(buffer.readLine()).substring(0, 1));
+            			buffer.readLine();
+            			vs.setDisCnt(Integer.parseInt(getDISCnt(buffer.readLine())));
+    					buffer.readLine();
+    					vs.setLoadCnt(Integer.parseInt(getLOADCnt(buffer.readLine())));
+    					buffer.readLine();
+    					buffer.readLine();
+    					buffer.readLine();
+    					vs.setRoute(getRoute(buffer.readLine()));
+    					buffer.readLine();
+    					buffer.readLine();
+    					buffer.readLine();
+    					buffer.readLine();
+    					vesselScheduleList.add(vs);
+            		}
+            	}
+            }
+        }
+        catch (Exception e)
+        {
+        	Util.exceptionProc(e);
+        } 
+        
+		return vesselScheduleList;
+	}
+	
+	
+	
 	
 	@Override
 	protected String getBerthNo(String html) {
@@ -101,9 +199,11 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		
-		if((sTemp[4].split("<"))[0].equals("ÃâÇ×")){
+//		if((sTemp[4].split("<"))[0].equals("ï¿½ï¿½ï¿½ï¿½")){
+		if((sTemp[4].split("<"))[0].equals("ì¶œí•­")){
 			return (sTemp[9].split("<"))[0].trim();
-		}else if((sTemp[4].split("<"))[0].equals("Á¢¾È")){
+//		}else if((sTemp[4].split("<"))[0].equals("ï¿½ï¿½ï¿½ï¿½")){
+		}else if((sTemp[4].split("<"))[0].equals("ì ‘ì•ˆ")){
 			return (sTemp[9].split("'"))[0].trim();
 		}else{
 			return (sTemp[9].split("'"))[0].trim();
@@ -115,9 +215,11 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		
-		if((sTemp[4].split("<"))[0].equals("ÃâÇ×")){
+//		if((sTemp[4].split("<"))[0].equals("ï¿½ï¿½ï¿½ï¿½")){
+		if((sTemp[4].split("<"))[0].equals("ì¶œí•­")){
 			return (sTemp[23].split("<"))[0].trim();
-		}else if((sTemp[4].split("<"))[0].equals("Á¢¾È")){
+//		}else if((sTemp[4].split("<"))[0].equals("ï¿½ï¿½ï¿½ï¿½")){
+		}else if((sTemp[4].split("<"))[0].equals("ì ‘ì•ˆ")){
 			return (sTemp[10].split("<"))[0].trim();
 		}else{
 			return (sTemp[11].split("<"))[0].trim();
@@ -148,9 +250,11 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 	protected String getVSLName(String html) {
 		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
-		if((sTemp[4].split("<"))[0].equals("ÃâÇ×")){
+//		if((sTemp[4].split("<"))[0].equals("ï¿½ï¿½ï¿½ï¿½")){
+		if((sTemp[4].split("<"))[0].equals("ì¶œí•­")){
 			return (sTemp[23].split("<"))[0].trim();
-		}else if((sTemp[4].split("<"))[0].equals("Á¢¾È")){
+//		}else if((sTemp[4].split("<"))[0].equals("ï¿½ï¿½ï¿½ï¿½")){
+		}else if((sTemp[4].split("<"))[0].equals("ì ‘ì•ˆ")){
 			return (sTemp[12].split("<"))[0].trim();
 		}else{
 			return (sTemp[12].split("<"))[0].trim();
@@ -172,7 +276,7 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 2)
-			return (sTemp[2].split("<"))[0].trim();
+			return (sTemp[2].split("<"))[0].trim().replace("/", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
 			return "!!NONE!!";
 	}
@@ -182,7 +286,7 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 2)
-			return (sTemp[2].split("<"))[0].trim();
+			return (sTemp[2].split("<"))[0].trim().replace("-", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
 			return "!!NONE!!";
 	}
@@ -192,7 +296,7 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 2)
-			return (sTemp[2].split("<"))[0].trim();
+			return (sTemp[2].split("<"))[0].trim().replace("-", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
 			return "!!NONE!!";
 	}
@@ -202,7 +306,7 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 1)
-			return (sTemp[1].split("<"))[0].trim();
+			return (sTemp[1].split("<"))[0].trim().replace("-", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
 			return "!!NONE!!";
 	}
@@ -212,7 +316,7 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 1)
-			return (sTemp[1].split("<"))[0].trim();
+			return (sTemp[1].split("<"))[0].trim().replace("-", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
 			return "!!NONE!!";
 	}

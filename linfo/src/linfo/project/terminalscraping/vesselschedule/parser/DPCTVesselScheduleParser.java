@@ -2,6 +2,10 @@ package linfo.project.terminalscraping.vesselschedule.parser;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.ArrayList;
+
+import linfo.project.terminalscraping.objects.VesselSchedule;
+import linfo.project.util.Util;
 
 public class DPCTVesselScheduleParser extends VesselScheduleParser {
 	@Override
@@ -15,8 +19,6 @@ public class DPCTVesselScheduleParser extends VesselScheduleParser {
             buffer = new BufferedReader(sr);
             
             String line;
-            
-            boolean bStart = false;
             
             while((line = buffer.readLine()) != null){
             	if(line.contains("<td><font color=\"#368A94\"><b>Shift</b></font></td>")){
@@ -95,7 +97,7 @@ public class DPCTVesselScheduleParser extends VesselScheduleParser {
 		            			case 8:
 		            				dt = this.removeTags(line);
 		            				if (!dt.trim().equals("") && dt.trim().charAt(0) == '('){
-		            					System.out.print(this.getETB(line).replace("(", "").replace(")", "") + "*");
+		            					System.out.print(this.getETB(line) + "*");
 		            				}else{
 		            					System.out.print(this.getATB(line) + "*");
 		            				}
@@ -111,7 +113,7 @@ public class DPCTVesselScheduleParser extends VesselScheduleParser {
 		            			case 12:
 		            				dt = this.removeTags(line);
 		            				if (!dt.trim().equals("") && dt.trim().charAt(0) == '('){
-		            					System.out.print(this.getETD(line).replace("(", "").replace(")", "") + "*");
+		            					System.out.print(this.getETD(line) + "*");
 		            				}else{
 		            					System.out.print(this.getATD(line) + "*");
 		            				}
@@ -145,11 +147,136 @@ public class DPCTVesselScheduleParser extends VesselScheduleParser {
             	
             	
             }
+        }catch (Exception e){
+        	Util.exceptionProc(e);
         }
-        catch (Exception e)
+	}
+
+	@Override
+	public ArrayList<VesselSchedule> extractVesselSchedule(String html) {
+		ArrayList<VesselSchedule> vesselScheduleList = new ArrayList<>();
+		BufferedReader buffer;
+        
+        try
         {
-        	e.printStackTrace();
-        } 
+            StringReader sr = new StringReader(html);
+				
+            buffer = new BufferedReader(sr);
+            
+            String line;
+            
+            while((line = buffer.readLine()) != null){
+            	if(line.contains("<td><font color=\"#368A94\"><b>Shift</b></font></td>")){
+            		break;
+            	}
+            }
+            
+            while((line = buffer.readLine()) != null){
+            	if(line.contains("</tr>")){
+            		break;
+            	}
+            }
+            
+            while((line = buffer.readLine()) != null){
+            	if(line.contains("</tr>")){
+            		break;
+            	}
+            }
+            
+            while((line = buffer.readLine()) != null){
+            	if(line.contains("</tr>")){
+            		break;
+            	}
+            }
+            
+            while((line = buffer.readLine()) != null){
+            	if(line.contains("</TABLE>")){
+            		break;
+            	}
+            	
+            	if(line.contains("<tr")){
+            		int dataIndex = 0;
+            		boolean isVessel = false;
+            		VesselSchedule vs = new VesselSchedule();
+            		
+            		while(!(line = buffer.readLine().trim()).contains("</tr")){
+            			if(line.trim().contains("<td") && !line.trim().contains("<td height=\"1\" colspan=\"23\" bgcolor=\"#CCCCCC\"></td>")){
+            				String dt;
+            				isVessel = true;
+	            			
+            				switch(dataIndex){
+		            			case 2:
+		            				vs.setBerthNo(this.getBerthNo(line));
+		            				dataIndex++;
+		            				break;
+		            			case 4:
+		            				vs.setVvd(this.getVVD(line));
+		            				dataIndex++;
+		            				break;
+		            			case 6:
+		            				vs.setVslName(this.getVSLName(line));
+		            				dataIndex++;
+		            				break;
+		            			case 8:
+		            				dt = this.removeTags(line);
+		            				if (!dt.trim().equals("") && dt.trim().charAt(0) == '('){
+		            					vs.setEtb(this.getETB(line));
+		            				}else{
+		            					vs.setAtb(this.getATB(line));
+		            				}
+		            				dataIndex++;
+		            				break;
+		            			case 10:
+		            				dt = this.removeTags(line);
+		            				if (!dt.trim().equals("") && dt.trim().charAt(0) != '('){
+		            					vs.setCct(this.getCCT(line));
+		            				}
+		            				dataIndex++;
+		            				break;
+		            			case 12:
+		            				dt = this.removeTags(line);
+		            				if (!dt.trim().equals("") && dt.trim().charAt(0) == '('){
+		            					vs.setEtd(this.getETD(line));
+		            				}else{
+		            					vs.setAtd(this.getATD(line));
+		            				}
+		            				dataIndex++;
+		            				break;
+		            			case 14:
+		            				vs.setOpr(this.getOPR(line));
+		            				dataIndex++;
+		            				break;
+		            			case 18:
+		            				vs.setDisCnt(Integer.parseInt(this.getDISCnt(line)));
+		            				dataIndex++;
+		            				break;
+		            			case 20:
+		            				vs.setLoadCnt(Integer.parseInt(this.getLOADCnt(line)));
+		            				dataIndex++;
+		            				break;
+		            			case 22:
+		            				vs.setShiftCnt(Integer.parseInt(this.getShiftCnt(line)));
+		            				dataIndex++;
+		            				break;
+		            			default:
+		            				dataIndex++;
+		            				break;
+	            			}
+            			}
+            		}
+            		
+            		if (isVessel){
+            			vesselScheduleList.add(vs);
+            		}
+            	}
+            	
+            	
+            }
+        }catch (Exception e){
+        	Util.exceptionProc(e);
+        }
+		
+		return vesselScheduleList;
 	}
 	
 	

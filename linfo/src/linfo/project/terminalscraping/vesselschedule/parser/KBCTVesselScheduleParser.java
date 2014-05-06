@@ -2,6 +2,10 @@ package linfo.project.terminalscraping.vesselschedule.parser;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.ArrayList;
+
+import linfo.project.terminalscraping.objects.VesselSchedule;
+import linfo.project.util.Util;
 
 public class KBCTVesselScheduleParser extends VesselScheduleParser{
 	@Override
@@ -28,20 +32,20 @@ public class KBCTVesselScheduleParser extends VesselScheduleParser{
             	}
             	
 //            	<tr>
-//    				<th>¼±¼®</th> getBerthNo 
-//    				<th>¸ð¼±Ç×Â÷</th> getVVD 
-//    				<th>¼±¹Ú¸í</th> getVSLName 
-//    				<th>Á¢¾È</th> getVVDStatus 
-//    				<th>¼±»ç</th> getOPR 
-//    				<th>ÀÔÇ× ¿¹Á¤ÀÏ½Ã</th> getETB 
-//    				<th>ÀÔÇ×ÀÏ½Ã</th> getATB
-//    				<th>ÃâÇ× ¿¹Á¤ÀÏ½Ã</th> getETD 
-//    				<th>ÃâÇ×ÀÏ½Ã</th> getATD
-//    				<th>¹ÝÀÔ ¸¶°¨ÀÏ½Ã</th> getCCT 
-//    				<th>¾çÇÏ</th> getDISCnt 
-//    				<th>¼±Àû</th> getLOADCnt 
+//    				<th>ï¿½ï¿½ï¿½ï¿½</th> getBerthNo 
+//    				<th>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</th> getVVD 
+//    				<th>ï¿½ï¿½ï¿½Ú¸ï¿½</th> getVSLName 
+//    				<th>ï¿½ï¿½ï¿½ï¿½</th> getVVDStatus 
+//    				<th>ï¿½ï¿½ï¿½ï¿½</th> getOPR 
+//    				<th>ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½</th> getETB 
+//    				<th>ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½</th> getATB
+//    				<th>ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½</th> getETD 
+//    				<th>ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½</th> getATD
+//    				<th>ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½</th> getCCT 
+//    				<th>ï¿½ï¿½ï¿½ï¿½</th> getDISCnt 
+//    				<th>ï¿½ï¿½ï¿½ï¿½</th> getLOADCnt 
 //    				<th>S/H</th>	getShiftCnt 
-//    				<th>Àü¹è</th>
+//    				<th>ï¿½ï¿½ï¿½</th>
 //    			</tr>
             	
             	if(bStart){
@@ -53,7 +57,8 @@ public class KBCTVesselScheduleParser extends VesselScheduleParser{
             			System.out.print(getBerthNo(line) + "*");
             			System.out.print(getVVD(buffer.readLine()) + "*");
             			System.out.print(getVSLName(buffer.readLine()) + "*");
-            			System.out.print(getVVDStatus(buffer.readLine()) + "*");
+            			buffer.readLine();
+//            			System.out.print(getVVDStatus(buffer.readLine()) + "*");
             			System.out.print(getOPR(buffer.readLine()) + "*");
             			System.out.print(getETB(buffer.readLine()) + "*");
             			System.out.print(getATB(buffer.readLine()) + "*");
@@ -70,10 +75,70 @@ public class KBCTVesselScheduleParser extends VesselScheduleParser{
             		}
             	}
             }
-        }
-        catch (Exception e)
-        {
-        	e.printStackTrace();
+        }catch (Exception e){
+        	Util.exceptionProc(e);
         } 
 	}
+
+	@Override
+	public ArrayList<VesselSchedule> extractVesselSchedule(String html) {
+		ArrayList<VesselSchedule> vesselScheduleList = new ArrayList<>();
+		BufferedReader buffer;
+        
+        try
+        {
+            StringReader sr = new StringReader(html);
+				
+            buffer = new BufferedReader(sr);
+            
+            String line;
+            
+            boolean bStart = false;
+            
+            while((line = buffer.readLine()) != null){
+            	if(line.contains("<tbody>")){
+            		bStart = true;
+            	}
+            	
+            	if(line.contains("</tbody>")){
+            		break;
+            	}
+            	            	
+            	if(bStart){
+            		int iStart = 0;
+            		if(line.contains("<td"))
+            			iStart++;
+    			
+            		if(iStart > 0){
+            			VesselSchedule vs = new VesselSchedule();
+            			
+            			vs.setBerthNo(getBerthNo(line));
+            			vs.setVvd(getVVD(buffer.readLine()));
+            			vs.setVslName(getVSLName(buffer.readLine()));
+            			buffer.readLine();
+            			vs.setOpr(getOPR(buffer.readLine()));
+            			vs.setEtb(getETB(buffer.readLine()));
+            			vs.setAtb(getATB(buffer.readLine()));
+            			vs.setEtd(getETD(buffer.readLine()));
+            			vs.setAtd(getATD(buffer.readLine()));
+            			vs.setCct(getCCT(buffer.readLine()));
+            			vs.setDisCnt(Integer.parseInt(getDISCnt(buffer.readLine())));
+            			vs.setLoadCnt(Integer.parseInt(getLOADCnt(buffer.readLine())));
+            			vs.setShiftCnt(Integer.parseInt(getShiftCnt(buffer.readLine())));
+            			buffer.readLine();
+            			
+            			vesselScheduleList.add(vs);
+            			iStart = 0;
+            		}
+            	}
+            }
+        }catch (Exception e){
+        	Util.exceptionProc(e);
+        } 
+        
+		return vesselScheduleList;
+	}
+	
+	
+	
 }
