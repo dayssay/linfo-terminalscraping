@@ -16,8 +16,7 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
 	public void SetBerthInfo(String pHtml){
         BufferedReader buffer;
         
-        try
-        {
+        try{
             StringReader sr = new StringReader(pHtml);
             buffer = new BufferedReader(sr);
             
@@ -73,8 +72,7 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
 		ArrayList<VesselSchedule> vesselScheduleList = new ArrayList<>();
 		BufferedReader buffer;
         
-        try
-        {
+        try{
             StringReader sr = new StringReader(html);
             buffer = new BufferedReader(sr);
             
@@ -132,7 +130,6 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
 
 	@Override
 	protected String getVVDStatus(String pHtml) {
-		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split("#");
 		if(sTemp.length > 1)
 			if(sTemp[1].substring(0, 6).equals(g_sBerth))
@@ -142,28 +139,25 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
 			else
 				return "Plan";
 		else
-			return "STS";
+			return "";
 	}
 	
 	@Override
 	protected String getBerthNo(String pHtml) {
-		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
 		if(sTemp.length > 1)
 			return sTemp[1].substring(0, 2);
 		else
-			return "BNO";
+			return "";
 	}
 	
 	@Override
 	protected String getATD(String pHtml) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
 	protected String getATB(String pHtml) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -18,7 +18,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 public class Scraper {
+//	scrap 할 항목들이 정의된 파일
 	private final String ITEM_FILE_NAME = "scrap-list.xml";
+	
+//	scrap 항목별 수집 terminal 목록
 	private final String TERMINAL_LIST_FILE_NAME = "terminal-list.xml";
 	
 	private HashMap<String, String>items;
@@ -37,7 +40,9 @@ public class Scraper {
 	
 	
 	
-	
+	/**
+	* ITEM_FILE_NAME 파일(xml)에 정의되어 있는 item 들을 가져와서 변수에 저장한다.
+	*/
 	private void setItems(){
 		try{
 			Document itemDoc = Util.getXMLDocument(this.filePath + this.ITEM_FILE_NAME);;
@@ -62,7 +67,10 @@ public class Scraper {
 	
 	
 	
-	
+	/**
+	* TERMINAL_LIST_FILE_NAME 파일(xml)에 정의되어 있는 터미널 web site 정보를 변수에 저장한다.
+	* @param item item 의 id 값
+	*/
 	private void setTerminalList(String item){
 		try{
 			Document terminalDoc = Util.getXMLDocument(this.filePath + this.TERMINAL_LIST_FILE_NAME);;
@@ -126,7 +134,10 @@ public class Scraper {
 	
 
 		
-	
+	/**
+	* 터미널 접속정보를 이용해 해당 페이지의 html 코드를 가져온다.
+	* @param terminal Terminal Web Site 정보
+	*/
 	public StringBuffer getHtml(TerminalWebSite terminal){
 		StringBuffer html = new StringBuffer();
 		URL url;
@@ -216,7 +227,11 @@ public class Scraper {
 	
 	
 	
-	
+	/**
+	* 파라미터 맵을 파라미터 URL 형태로 변경한다.
+	* e.g. days=3days&param=value
+	* @param m (변수명, 값)으로 이루어진 HashMap 
+	*/
 	private String mapToUrlParamString(HashMap<String, String> m){
 		String urlParameter = "";
 		ArrayList<String> params = Util.getKeyList(m);

@@ -5,21 +5,52 @@ public class VesselSchedule {
 		UNKNOWN, PLANNED, BERTHING, DEPARTED
 	}
 	
+//	선석 번호
 	private String berthNo;
+
+//	선사코드
 	private String opr;
+	
+//	터미널항차
 	private String vvd;
+	
+//	입항항차
 	private String inVvdForShippingCom;
+	
+//	출항항차
 	private String outVvdForShippingCom;
+	
+//	선명
 	private String vslName;
+	
+//	route
 	private String route;
+	
+//	반입 마감일시 (yyyymmddhh24mi 12자리)
 	private String cct;
+	
+//	접안 예정 일시 (yyyymmddhh24mi 12자리)
 	private String etb;
+	
+//	출항 예정 일시 (yyyymmddhh24mi 12자리)
 	private String etd;
+	
+//	실 접안 일시 (yyyymmddhh24mi 12자리)
 	private String atb;
+	
+//	실 출항 일시(yyyymmddhh24mi 12자리)
 	private String atd;
+	
+//	적하 물량
 	private int loadCnt;
+	
+//	양하 물량
 	private int disCnt;
+	
+//	shifting 물량
 	private int shiftCnt;
+	
+//	현 접안 상태
 	private VVD_STATUS vvdStatus;
 	
 	

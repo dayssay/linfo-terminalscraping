@@ -12,8 +12,7 @@ public class DPCTVesselScheduleParser extends VesselScheduleParser {
 	public void SetBerthInfo(String pHtml){
         BufferedReader buffer;
         
-        try
-        {
+        try{
             StringReader sr = new StringReader(pHtml);
 				
             buffer = new BufferedReader(sr);
@@ -152,13 +151,13 @@ public class DPCTVesselScheduleParser extends VesselScheduleParser {
         }
 	}
 
+	
 	@Override
 	public ArrayList<VesselSchedule> extractVesselSchedule(String html) {
 		ArrayList<VesselSchedule> vesselScheduleList = new ArrayList<>();
 		BufferedReader buffer;
         
-        try
-        {
+        try{
             StringReader sr = new StringReader(html);
 				
             buffer = new BufferedReader(sr);
@@ -269,8 +268,6 @@ public class DPCTVesselScheduleParser extends VesselScheduleParser {
             			vesselScheduleList.add(vs);
             		}
             	}
-            	
-            	
             }
         }catch (Exception e){
         	Util.exceptionProc(e);

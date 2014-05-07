@@ -12,8 +12,7 @@ public class HKTLVesselScheduleParser extends VesselScheduleParser{
 	public void SetBerthInfo(String pHtml){
         BufferedReader buffer;
         
-        try
-        {
+        try{
             StringReader sr = new StringReader(pHtml);
 				
             buffer = new BufferedReader(sr);
@@ -117,11 +116,7 @@ public class HKTLVesselScheduleParser extends VesselScheduleParser{
         	Util.exceptionProc(e);
         } 
 	}
-	
-	
-	
-	
-	
+		
 
 	@Override
 	public ArrayList<VesselSchedule> extractVesselSchedule(String html) {
@@ -225,96 +220,80 @@ public class HKTLVesselScheduleParser extends VesselScheduleParser{
 	}
 	
 	
-	
-	
-	
 	@Override
 	protected String getBerthNo(String html) {
-		// TODO Auto-generated method stub
 		return super.removeTags(html);
 	}
 
 
 	@Override
 	protected String getOPR(String html) {
-		// TODO Auto-generated method stub
 		return super.removeTags(html);
 	}
 
 
 	@Override
 	protected String getVVD(String html) {
-		// TODO Auto-generated method stub
 		return super.removeTags(html);
 	}
 
 
 	@Override
 	protected String getINVVDforShippingCom(String html) {
-		// TODO Auto-generated method stub
 		return super.removeTags(html);
 	}
 
 
 	@Override
 	protected String getOUTVVDforShippingCom(String html) {
-		// TODO Auto-generated method stub
 		return super.removeTags(html);
 	}
 
 
 	@Override
 	protected String getVSLName(String html) {
-		// TODO Auto-generated method stub
 		return super.removeTags(html);
 	}
 
 
 	@Override
 	protected String getRoute(String html) {
-		// TODO Auto-generated method stub
 		return super.removeTags(html);
 	}
 
 
 	@Override
 	protected String getCCT(String html) {
-		// TODO Auto-generated method stub
 		return !super.removeTags(html).trim().equals("")?super.removeTags(html).replace("/", "").replace(":", "").replace(" ", "").substring(0, 12):"";
 	}
 
 
 	@Override
 	protected String getETB(String html) {
-		// TODO Auto-generated method stub
 		return !super.removeTags(html).trim().equals("")?super.removeTags(html).replace("/", "").replace(":", "").replace(" ", "").substring(0, 12):"";
 	}
 
 	
 	@Override
 	protected String getETD(String html) {
-		// TODO Auto-generated method stub
 		return !super.removeTags(html).trim().equals("")?super.removeTags(html).replace("/", "").replace(":", "").replace(" ", "").substring(0, 12):"";
 	}
 
 
 	@Override
 	protected String getATB(String html) {
-		// TODO Auto-generated method stub
 		return !super.removeTags(html).trim().equals("")?super.removeTags(html).replace("/", "").replace(":", "").replace(" ", "").substring(0, 12):"";
 	}
 
 
 	@Override
 	protected String getATD(String html) {
-		// TODO Auto-generated method stub
 		return !super.removeTags(html).trim().equals("")?super.removeTags(html).replace("/", "").replace(":", "").replace(" ", "").substring(0, 12):"";
 	}
 
 
 	@Override
 	protected String getShiftCnt(String html) {
-		// TODO Auto-generated method stub
 		return super.removeTags(html);
 	}
 
