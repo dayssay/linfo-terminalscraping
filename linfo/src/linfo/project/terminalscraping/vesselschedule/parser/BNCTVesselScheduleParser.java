@@ -14,8 +14,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
 	public void SetBerthInfo(String pHtml) {
 		BufferedReader buffer;
         
-        try
-        {
+        try{
             StringReader sr = new StringReader(pHtml);
 				
             buffer = new BufferedReader(sr);
@@ -33,7 +32,6 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
             		if(line.contains("<table"))
             			iStart++;
             		
-            		// ���߿� �ѱ� ����� ������ �ٲ�� �� �κ�...
             		if(iStart == 3){
             			if(line.contains("td") && (line.contains("#F5F5F5") || line.contains("#EFFBF3") || line.contains("#FEDFDF"))){
             				
@@ -63,9 +61,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
             		}
             	}
             }
-        }
-        catch (Exception e)
-        {
+        }catch (Exception e){
         	Util.exceptionProc(e);
         } 
 	}
@@ -97,7 +93,6 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
             		if(line.contains("<table"))
             			iStart++;
             		
-            		// ���߿� �ѱ� ����� ������ �ٲ�� �� �κ�...
             		if(iStart == 3){
             			if(line.contains("td") && (line.contains("#F5F5F5") || line.contains("#EFFBF3") || line.contains("#FEDFDF"))){
             				VesselSchedule vs = new VesselSchedule();
@@ -136,9 +131,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
             		}
             	}
             }
-        }
-        catch (Exception e)
-        {
+        }catch (Exception e){
         	Util.exceptionProc(e);
         }
         
@@ -150,109 +143,98 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
 
 	@Override
 	protected String getINVVDforShippingCom(String pHtml) {
-		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split("/");
 		if(sTemp.length > 1){
 			String[] sVVD = sTemp[0].trim().split("[(]");
 			if(sVVD.length > 1)
 				return sVVD[1];
 			else
-				return "INVVD";
+				return "";
 		}
 		else
-			return "INVVD";
+			return "";
 	}
 	
 	@Override
 	protected String getOUTVVDforShippingCom(String pHtml) {
-		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split("/");
 		if(sTemp.length > 1){
 			String[] sVVD = sTemp[1].trim().split("[)]");
 			if(sVVD.length > 1)
 				return sVVD[0];
 			else
-				return "OUTVVD";
+				return "";
 		}
 		else
-			return "OUTVVD";
+			return "";
 	}
 	
 	@Override
 	protected String getVVD(String pHtml) {
-		// TODO Auto-generated method stub
 		return pHtml.trim();
 	}
 	
 	@Override
 	protected String getShiftCnt(String pHtml) {
-		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
 		if(sTemp.length > 1)
 			return ((sTemp[1].split("/"))[2].split("<"))[0].trim();
 		else
-			return "SHIFT";
+			return "";
 	}
 	
 	@Override
 	protected String getRoute(String pHtml) {
-		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split("[(]");
 		if(sTemp.length > 1)
 			return (sTemp[1].split("[)]"))[0];
 		else
-			return "ROU";
+			return "";
 	}
 	
 	@Override
 	protected String getLOADCnt(String pHtml) {
-		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
 		if(sTemp.length > 1)
 			return (sTemp[1].split("/"))[1].trim();
 		else
-			return "LOAD";
+			return "";
 	}
 	
 	@Override
 	protected String getETB(String pHtml) {
-		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
 		if(sTemp.length > 1)
 			return (sTemp[1].split("<"))[0].replace("/", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
-			return "ETB";
+			return "";
 	}
 	
 	@Override
 	protected String getDISCnt(String pHtml) {
-		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
 		if(sTemp.length > 1)
 			return (sTemp[1].split("/"))[0].trim();
 		else
-			return "DIS";
+			return "";
 	}
 	
 	@Override
 	protected String getBerthNo(String pHtml) {
-		// TODO Auto-generated method stub
 		String[] sTemp = pHtml.split(">");
 		if(sTemp.length > 1)
 			return sTemp[1].substring(0, 1);
 		else
-			return "BNO";
+			return "";
 	}
 	
 	@Override
 	protected String getATD(String pHtml) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
 	protected String getATB(String pHtml) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

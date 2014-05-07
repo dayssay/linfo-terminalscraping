@@ -10,17 +10,11 @@ import linfo.project.util.Util;
 
 public class BITVesselScheduleParser extends VesselScheduleParser{
 	
-//	private String g_sBerth = "CC0033";		// ������
-//	private String g_sDepart = "0066CC";	// ����
-//	private String g_sPlan = "333333";		// ������
-//	private String g_sCancel = "";			// ���
-	
 	@Override
 	public void SetBerthInfo(String pHtml){
         BufferedReader buffer;
         
-        try
-        {
+        try{
             StringReader sr = new StringReader(pHtml);
             buffer = new BufferedReader(sr);
             
@@ -28,7 +22,6 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
             int iStart = 0;
             
             while((line = buffer.readLine()) != null){
-//            	if(line.contains("������") || line.contains("����") || line.contains("���ȿ���")){
             	if(line.contains("출항") || line.contains("접안중") || line.contains("접안예정")){
             		if(iStart < 1){
             			buffer.readLine();
@@ -36,8 +29,7 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
             		
             		iStart++;
             		
-            		if (iStart > 1)
-            		{
+            		if (iStart > 1){
             			buffer.readLine();
             			String sInfo = buffer.readLine();
             			System.out.print(getVVDStatus(sInfo)+"*");
@@ -84,11 +76,9 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
             		}
             	}
             }
-        }
-        catch (Exception e)
-        {
+        }catch (Exception e){
         	Util.exceptionProc(e);
-        } 
+        }
 	}
 	
 	
@@ -97,8 +87,7 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 		ArrayList<VesselSchedule> vesselScheduleList = new ArrayList<>();
 		BufferedReader buffer;
         
-        try
-        {
+        try{
             StringReader sr = new StringReader(html);
             buffer = new BufferedReader(sr);
             
@@ -106,7 +95,6 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
             int iStart = 0;
             
             while((line = buffer.readLine()) != null){
-//            	if(line.contains("������") || line.contains("����") || line.contains("���ȿ���")){
             	if(line.contains("출항") || line.contains("접안중") || line.contains("접안예정")){
             		if(iStart < 1){
             			buffer.readLine();
@@ -172,16 +160,12 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
             		}
             	}
             }
-        }
-        catch (Exception e)
-        {
+        }catch (Exception e){
         	Util.exceptionProc(e);
         } 
         
 		return vesselScheduleList;
 	}
-	
-	
 	
 	
 	@Override
@@ -196,13 +180,10 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 	
 	@Override
 	protected String getOPR(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		
-//		if((sTemp[4].split("<"))[0].equals("����")){
 		if((sTemp[4].split("<"))[0].equals("출항")){
 			return (sTemp[9].split("<"))[0].trim();
-//		}else if((sTemp[4].split("<"))[0].equals("����")){
 		}else if((sTemp[4].split("<"))[0].equals("접안")){
 			return (sTemp[9].split("'"))[0].trim();
 		}else{
@@ -212,13 +193,10 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 
 	@Override
 	protected String getVVD(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		
-//		if((sTemp[4].split("<"))[0].equals("����")){
 		if((sTemp[4].split("<"))[0].equals("출항")){
 			return (sTemp[23].split("<"))[0].trim();
-//		}else if((sTemp[4].split("<"))[0].equals("����")){
 		}else if((sTemp[4].split("<"))[0].equals("접안")){
 			return (sTemp[10].split("<"))[0].trim();
 		}else{
@@ -228,12 +206,11 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 
 	@Override
 	protected String getINVVDforShippingCom(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 2)
 			return (sTemp[2].split("<"))[0].trim();
 		else
-			return "!!NONE!!";
+			return "";
 	}
 
 	@Override
@@ -243,17 +220,14 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 		if(sTemp.length > 2)
 			return (sTemp[2].split("<"))[0].trim();
 		else
-			return "!!NONE!!";
+			return "";
 	}
 
 	@Override
 	protected String getVSLName(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
-//		if((sTemp[4].split("<"))[0].equals("����")){
 		if((sTemp[4].split("<"))[0].equals("출항")){
 			return (sTemp[23].split("<"))[0].trim();
-//		}else if((sTemp[4].split("<"))[0].equals("����")){
 		}else if((sTemp[4].split("<"))[0].equals("접안")){
 			return (sTemp[12].split("<"))[0].trim();
 		}else{
@@ -263,101 +237,91 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 
 	@Override
 	protected String getRoute(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 4)
 			return (sTemp[4].split("<"))[0].trim();
 		else
-			return "!!NONE!!";
+			return "";
 	}
 
 	@Override
 	protected String getCCT(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 2)
 			return (sTemp[2].split("<"))[0].trim().replace("/", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
-			return "!!NONE!!";
+			return "";
 	}
 
 	@Override
 	protected String getETB(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 2)
 			return (sTemp[2].split("<"))[0].trim().replace("-", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
-			return "!!NONE!!";
+			return "";
 	}
 
 	@Override
 	protected String getETD(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 2)
 			return (sTemp[2].split("<"))[0].trim().replace("-", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
-			return "!!NONE!!";
+			return "";
 	}
 
 	@Override
 	protected String getATB(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 1)
 			return (sTemp[1].split("<"))[0].trim().replace("-", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
-			return "!!NONE!!";
+			return "";
 	}
 
 	@Override
 	protected String getATD(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 1)
 			return (sTemp[1].split("<"))[0].trim().replace("-", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
-			return "!!NONE!!";
+			return "";
 	}
 
 	@Override
 	protected String getLOADCnt(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 2)
 			return (sTemp[2].split("<"))[0].trim();
 		else
-			return "!!NONE!!";
+			return "";
 	}
 
 	@Override
 	protected String getDISCnt(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 2)
 			return (sTemp[2].split("<"))[0].trim();
 		else
-			return "!!NONE!!";
+			return "";
 	}
 
 	@Override
 	protected String getShiftCnt(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 1)
 			return (sTemp[1].split("<"))[0].trim();
 		else
-			return "!!NONE!!";
+			return "";
 	}
 
 	@Override
 	protected String getVVDStatus(String html) {
-		// TODO Auto-generated method stub
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 4)
 			return (sTemp[4].split("<"))[0].trim();
 		else
-			return "!!NONE!!";
+			return "";
 	}
 }

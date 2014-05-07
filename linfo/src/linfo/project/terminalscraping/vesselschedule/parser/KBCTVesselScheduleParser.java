@@ -12,8 +12,7 @@ public class KBCTVesselScheduleParser extends VesselScheduleParser{
 	public void SetBerthInfo(String pHtml){
         BufferedReader buffer;
         
-        try
-        {
+        try{
             StringReader sr = new StringReader(pHtml);
 				
             buffer = new BufferedReader(sr);
@@ -30,23 +29,6 @@ public class KBCTVesselScheduleParser extends VesselScheduleParser{
             	if(line.contains("</tbody>")){
             		break;
             	}
-            	
-//            	<tr>
-//    				<th>����</th> getBerthNo 
-//    				<th>������</th> getVVD 
-//    				<th>���ڸ�</th> getVSLName 
-//    				<th>����</th> getVVDStatus 
-//    				<th>����</th> getOPR 
-//    				<th>���� �����Ͻ�</th> getETB 
-//    				<th>�����Ͻ�</th> getATB
-//    				<th>���� �����Ͻ�</th> getETD 
-//    				<th>�����Ͻ�</th> getATD
-//    				<th>���� �����Ͻ�</th> getCCT 
-//    				<th>����</th> getDISCnt 
-//    				<th>����</th> getLOADCnt 
-//    				<th>S/H</th>	getShiftCnt 
-//    				<th>���</th>
-//    			</tr>
             	
             	if(bStart){
             		int iStart = 0;
@@ -85,8 +67,7 @@ public class KBCTVesselScheduleParser extends VesselScheduleParser{
 		ArrayList<VesselSchedule> vesselScheduleList = new ArrayList<>();
 		BufferedReader buffer;
         
-        try
-        {
+        try{
             StringReader sr = new StringReader(html);
 				
             buffer = new BufferedReader(sr);

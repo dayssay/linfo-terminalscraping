@@ -11,6 +11,11 @@ import org.w3c.dom.Document;
 
 public class Util {
 	
+	/**
+	* HashMap<String, String> 자료 구조로 부터 key 목록을 ArrayList<String> 형태로 추출 한다.
+	* @param h <String, String> 타입의 HashMap
+	* @return ArrayList<String> key 목록
+	*/
 	public static ArrayList<String> getKeyList(HashMap<String, String> h){
 		ArrayList<String> keyList = new ArrayList<>();
 		
@@ -24,6 +29,11 @@ public class Util {
 	}
 	
 	
+	/**
+	* XML File로 부터 Document 객체를 생성한다.
+	* @param file file 명
+	* @return Document
+	*/
 	public static Document getXMLDocument(String file){
 		Document doc = null;
 		
@@ -42,8 +52,10 @@ public class Util {
 	
 	
 	
-	
-	
+	/**
+	* Exception 이 발생 했을때 처리 프로세스
+	* @param e Exception
+	*/
 	public static void exceptionProc(Exception e){
 		System.out.println(e.getMessage());
 	}

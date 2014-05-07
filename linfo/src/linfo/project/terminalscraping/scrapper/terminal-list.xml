@@ -53,7 +53,7 @@
 		<name>HYUNDAI PUSAN NEW-PORT TERMINAL</name>
 		<url>http://www.hpnt.co.kr/infoservice/vvdchart</url>
 		<encoding>euc-kr</encoding>
-		<request-property key="Cookie">JSESSIONID=0000NMQ0PMlzVPJVDveujEYWd3e:15c9glsrn;</request-property>
+		<cookie-url>http://www.hpnt.co.kr/infoservice/</cookie-url>
 	</terminal>
 	
 	<terminal id="KBCT">
