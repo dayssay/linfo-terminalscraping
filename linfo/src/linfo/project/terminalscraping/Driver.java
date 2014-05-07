@@ -14,12 +14,12 @@ public class Driver {
 				//각 터미널 ID에 맞는 VesselScheduleParser를 가져옴
 				VesselScheduleParser parser = new VesselScheduleParserFactory().getParser(t.getId());
 				
-				if(parser != null && t.getId().equals("PNIT")){
+				if(parser != null){
 //					Scraper가 html 코드를 가져오고
 //					Parser 각 html 코드로 부터 데이터를 뽑아옴
 					System.out.println("=====================" + t.getId() + "=====================================");
-//					System.out.println(s.getHtml(t).toString());
-					parser.SetBerthInfo(s.getHtml(t).toString());
+//					System.out.println(s.getHtml(t));
+					parser.SetBerthInfo(s.getHtml(t));
 				}
 			}
 		}
