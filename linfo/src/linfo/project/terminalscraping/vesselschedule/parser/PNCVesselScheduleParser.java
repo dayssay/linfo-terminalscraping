@@ -136,8 +136,8 @@ public class PNCVesselScheduleParser extends VesselScheduleParser{
     					vs.setEtd(getETD(buffer.readLine()));
     					vs.setBerthNo(getBerthNo(buffer.readLine()));
     					vs.setCct(getCCT(buffer.readLine()));
-    					vs.setDisCnt(Integer.parseInt(getDISCnt(buffer.readLine())));
-    					vs.setLoadCnt(Integer.parseInt(getLOADCnt(buffer.readLine())));
+    					vs.setDisCnt(Integer.parseInt(getDISCnt(buffer.readLine()) == ""?"0":getDISCnt(buffer.readLine())));
+    					vs.setLoadCnt(Integer.parseInt(getLOADCnt(buffer.readLine()) == ""?"0":getLOADCnt(buffer.readLine())));
     					
     					vesselScheduleList.add(vs);
             		}

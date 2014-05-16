@@ -2,6 +2,7 @@ package linfo.project.util;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -50,13 +51,53 @@ public class Util {
 		return doc;
 	}
 	
-	
-	
+		
 	/**
 	* Exception 이 발생 했을때 처리 프로세스
 	* @param e Exception
 	*/
 	public static void exceptionProc(Exception e){
-		System.out.println(e.getMessage());
+//		System.out.println(e.getMessage());
+		e.printStackTrace();
 	}
+	
+	
+	/**
+	* 현재 시스템의 날자를 반환한다
+	* @return yyyymmdd
+	*/
+	public static String getSystemDate(){
+		Calendar c = Calendar.getInstance();
+		return String.format("%04d", c.get(Calendar.YEAR)) 
+				+ String.format("%02d", c.get(Calendar.MONTH) + 1)
+				+ String.format("%02d", c.get(Calendar.DAY_OF_MONTH));
+	}
+	
+	
+	/**
+	* 현재 시스템의 시간을 반환한다
+	* @return hh24miss
+	*/
+	public static String getSystemTime(){
+		Calendar c = Calendar.getInstance();
+		return String.format("%02d", c.get(Calendar.HOUR_OF_DAY))
+				+ String.format("%02d", c.get(Calendar.MINUTE))
+				+ String.format("%02d", c.get(Calendar.SECOND));
+	}
+	
+	
+	/**
+	* 현재 시스템의 날자와 시간을 반환한다
+	* @return yyyymmddhh24miss
+	*/
+	public static String getSystemDateTime(){
+		Calendar c = Calendar.getInstance();
+		return String.format("%04d", c.get(Calendar.YEAR)) 
+				+ String.format("%02d", c.get(Calendar.MONTH) + 1)
+				+ String.format("%02d", c.get(Calendar.DAY_OF_MONTH))
+				+ String.format("%02d", c.get(Calendar.HOUR_OF_DAY))
+				+ String.format("%02d", c.get(Calendar.MINUTE))
+				+ String.format("%02d", c.get(Calendar.SECOND));
+	}
+	
 }

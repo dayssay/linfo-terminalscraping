@@ -113,7 +113,6 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
     					vs.setRoute(getRoute(buffer.readLine()));
     					
     					vesselScheduleList.add(vs);
-    					System.out.println("");
             		}
             	}
             }

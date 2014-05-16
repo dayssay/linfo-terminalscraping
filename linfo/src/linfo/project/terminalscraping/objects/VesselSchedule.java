@@ -55,7 +55,22 @@ public class VesselSchedule {
 	
 	
 	public VesselSchedule(){
-		
+		this.berthNo = "";
+		this.opr = "";
+		this.vvd = "";
+		this.inVvdForShippingCom = "";
+		this.outVvdForShippingCom = "";
+		this.vslName = "";
+		this.route = "";
+		this.cct = "";
+		this.etb = "";
+		this.etd = "";
+		this.atb = "";
+		this.atd = "";
+		this.loadCnt = 0;
+		this.disCnt = 0;
+		this.shiftCnt = 0;
+		this.vvdStatus = VVD_STATUS.UNKNOWN;
 	}
 	
 	
