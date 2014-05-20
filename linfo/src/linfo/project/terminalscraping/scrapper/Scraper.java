@@ -1,5 +1,7 @@
 package linfo.project.terminalscraping.scrapper;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,9 +35,10 @@ public class Scraper {
 	private String filePath;
 	
 	
-	public Scraper(){
-		this.filePath = Scraper.class.getProtectionDomain().getCodeSource().getLocation().getPath() 
-				+ "/" + Scraper.class.getPackage().getName().replace(".", "/") + "/";
+	public Scraper() throws IOException{
+//		this.filePath = Scraper.class.getProtectionDomain().getCodeSource().getLocation().getPath() 
+//				+ "/" + Scraper.class.getPackage().getName().replace(".", "/") + "/";
+		this.filePath = new File(".").getCanonicalPath() + "/cfg/";
 		
 		items = new HashMap<>();
 		terminalList = new ArrayList<>();
