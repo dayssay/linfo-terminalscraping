@@ -116,11 +116,17 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
         					vs.setDisCnt(Integer.parseInt(getDISCnt(sJobCnt)));
         					vs.setShiftCnt(Integer.parseInt(getShiftCnt(sJobCnt)));
         					buffer.readLine();
-        					String vvdStatus = buffer.readLine();
+        					String vvdStatus = removeTags(buffer.readLine()).trim();
         					if (vvdStatus.equals("DEPARTED")){
         						vs.setVvdStatus(VVD_STATUS.DEPARTED);
+        						vs.setAtb(vs.getEtb());
+        						vs.setAtd(vs.getEtd());
+        						vs.setEtb("");
+        						vs.setEtd("");
         					}else if (vvdStatus.equals("ARRIVED")){
         						vs.setVvdStatus(VVD_STATUS.BERTHING);
+        						vs.setAtb(vs.getEtb());
+        						vs.setEtb("");
         					}else if (vvdStatus.equals("PLANNED")){
         						vs.setVvdStatus(VVD_STATUS.PLANNED);
         					}else {

@@ -58,7 +58,7 @@ public class VesselScheduleParser{
 	* @return String 선석 번호
 	*/
 	protected String getBerthNo(String html) {
-		return getData(html);
+		return getData(html).trim();
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class VesselScheduleParser{
 	* @return String 선사 코드
 	*/
 	protected String getOPR(String html) {
-		return getData(html);
+		return getData(html).trim();
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class VesselScheduleParser{
 	* @return String 모선항차
 	*/
 	protected String getVVD(String html) {
-		return getData(html);
+		return getData(html).trim();
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class VesselScheduleParser{
 	* @return String 선사 입항항차
 	*/
 	protected String getINVVDforShippingCom(String html) {
-		return getData(html);
+		return getData(html).trim();
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class VesselScheduleParser{
 	* @return String 선사 출항항차
 	*/
 	protected String getOUTVVDforShippingCom(String html) {
-		return getData(html);
+		return getData(html).trim();
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class VesselScheduleParser{
 	* @return String 선명
 	*/
 	protected String getVSLName(String html) {
-		return getData(html);
+		return getData(html).trim();
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class VesselScheduleParser{
 	* @return String Route
 	*/
 	protected String getRoute(String html) {
-		return getData(html);
+		return getData(html).trim();
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class VesselScheduleParser{
 		if (getData(html).trim().equals("")){
 			return "";
 		}else{
-			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12);
+			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12).trim();
 		}
 	}
 
@@ -137,7 +137,7 @@ public class VesselScheduleParser{
 		if (getData(html).trim().equals("")){
 			return "";
 		}else{
-			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12);
+			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12).trim();
 		}
 	}
 
@@ -150,7 +150,7 @@ public class VesselScheduleParser{
 		if (getData(html).trim().equals("")){
 			return "";
 		}else{
-			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12);
+			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12).trim();
 		}
 	}
 
@@ -163,7 +163,7 @@ public class VesselScheduleParser{
 		if (getData(html).trim().equals("")){
 			return "";
 		}else{
-			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12);
+			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12).trim();
 		}
 	}
 
@@ -176,7 +176,7 @@ public class VesselScheduleParser{
 		if (getData(html).trim().equals("")){
 			return "";
 		}else{
-			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12);
+			return getData(html).replace("/", "").replace(" ", "").replace(":", "").replace("(", "").replace(")", "").replace("-", "").substring(0, 12).trim();
 		}
 	}
 
@@ -186,7 +186,7 @@ public class VesselScheduleParser{
 	* @return String 적하 작업 수량
 	*/
 	protected String getLOADCnt(String html) {
-		return getData(html);
+		return getData(html).trim() == "" ? "0":getData(html).trim();
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class VesselScheduleParser{
 	* @return String 양하 작업 수량
 	*/
 	protected String getDISCnt(String html) {
-		return getData(html);
+		return getData(html).trim() == "" ? "0":getData(html).trim();
 	}
 
 	/**
@@ -204,7 +204,7 @@ public class VesselScheduleParser{
 	* @return String Shifting 작업 수량
 	*/
 	protected String getShiftCnt(String html) {
-		return getData(html);
+		return getData(html).trim() == "" ? "0":getData(html).trim();
 	}
 
 	/**
@@ -213,7 +213,7 @@ public class VesselScheduleParser{
 	* @return String 모선 접안 상태
 	*/
 	protected String getVVDStatus(String html) {
-		return getData(html);
+		return getData(html).trim();
 	}
 	
 }

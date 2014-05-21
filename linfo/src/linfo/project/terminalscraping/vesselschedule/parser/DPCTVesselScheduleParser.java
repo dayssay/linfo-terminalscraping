@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 
 import linfo.project.terminalscraping.objects.VesselSchedule;
+import linfo.project.terminalscraping.objects.VesselSchedule.VVD_STATUS;
 import linfo.project.util.Util;
 
 public class DPCTVesselScheduleParser extends VesselScheduleParser {
@@ -264,7 +265,17 @@ public class DPCTVesselScheduleParser extends VesselScheduleParser {
             			}
             		}
             		
-            		if (isVessel){
+            		if(vs.getEtb() == "" && vs.getEtd() == "" && vs.getAtb() != "" && vs.getAtd() != ""){
+            			vs.setVvdStatus(VVD_STATUS.DEPARTED);
+            		}else if(vs.getEtb() == "" && vs.getEtd() != "" && vs.getAtb() != "" && vs.getAtd() == ""){
+            			vs.setVvdStatus(VVD_STATUS.BERTHING);
+            		}else if(vs.getEtb() != "" && vs.getEtd() != "" && vs.getAtb() == "" && vs.getAtd() == ""){
+            			vs.setVvdStatus(VVD_STATUS.PLANNED);
+            		}else{
+            			vs.setVvdStatus(VVD_STATUS.UNKNOWN);
+            		}
+            		
+            		if (isVessel && vs.getVvd().trim() != ""){
             			vesselScheduleList.add(vs);
             		}
             	}

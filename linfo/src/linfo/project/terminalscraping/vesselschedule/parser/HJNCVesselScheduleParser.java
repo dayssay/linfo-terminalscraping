@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 
 import linfo.project.terminalscraping.objects.VesselSchedule;
+import linfo.project.terminalscraping.objects.VesselSchedule.VVD_STATUS;
 import linfo.project.util.Util;
 
 public class HJNCVesselScheduleParser extends VesselScheduleParser{
@@ -86,6 +87,15 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
             		
             		if (iStart > 3){
             			VesselSchedule vs = new VesselSchedule();
+            			if(line.contains("#CCFFCC")){
+            				vs.setVvdStatus(VVD_STATUS.DEPARTED);
+            			}else if(line.contains("#FFCCCC")){
+            				vs.setVvdStatus(VVD_STATUS.BERTHING);
+            			}else if(line.contains("#FFFFFF")){
+            				vs.setVvdStatus(VVD_STATUS.PLANNED);
+            			}else{
+            				vs.setVvdStatus(VVD_STATUS.UNKNOWN);
+            			}
             			
             			vs.setVvd(getVVD(line));
             			vs.setVslName(getVSLName(buffer.readLine()));
@@ -98,9 +108,24 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
     					buffer.readLine();
     					vs.setCct(getCCT(buffer.readLine()));
     					buffer.readLine();
-    					vs.setEtb(getETB(buffer.readLine()));
+    					
+    					if(vs.getVvdStatus() == VVD_STATUS.PLANNED){
+	    					vs.setEtb(getETB(buffer.readLine()));
+    					}else if(vs.getVvdStatus() == VVD_STATUS.BERTHING || vs.getVvdStatus() == VVD_STATUS.DEPARTED){
+    						vs.setAtb(getETB(buffer.readLine()));
+    					}else{
+    						vs.setEtb(getETB(buffer.readLine()));
+    					}
+    					
     					buffer.readLine();
-    					vs.setEtd(getETD(buffer.readLine()));
+    					if(vs.getVvdStatus() == VVD_STATUS.PLANNED || vs.getVvdStatus() == VVD_STATUS.BERTHING){
+    						vs.setEtd(getETD(buffer.readLine()));
+    					}else if(vs.getVvdStatus() == VVD_STATUS.DEPARTED){
+    						vs.setAtd(getETD(buffer.readLine()));
+    					}else{
+    						vs.setEtd(getETD(buffer.readLine()));
+    					}
+    					
     					buffer.readLine();
     					vs.setDisCnt(Integer.parseInt(getDISCnt(buffer.readLine())));
     					buffer.readLine();

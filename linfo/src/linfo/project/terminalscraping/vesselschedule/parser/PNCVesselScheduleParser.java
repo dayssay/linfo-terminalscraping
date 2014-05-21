@@ -132,12 +132,28 @@ public class PNCVesselScheduleParser extends VesselScheduleParser{
     					vs.setOpr(getOPR(buffer.readLine()));
     					vs.setRoute(getRoute(buffer.readLine()));
     					buffer.readLine();		// Berthing Direction
-    					vs.setEtb(getETB(buffer.readLine()));
-    					vs.setEtd(getETD(buffer.readLine()));
+    					
+    					
+    					if(vs.getVvdStatus() == VVD_STATUS.PLANNED){
+    						vs.setEtb(getETB(buffer.readLine()));
+    					}else if(vs.getVvdStatus() == VVD_STATUS.BERTHING || vs.getVvdStatus() == VVD_STATUS.DEPARTED){
+    						vs.setAtb(getETB(buffer.readLine()));
+    					}else{
+    						vs.setEtb(getETB(buffer.readLine()));
+    					}
+    					
+    					if(vs.getVvdStatus() == VVD_STATUS.PLANNED || vs.getVvdStatus() == VVD_STATUS.BERTHING){
+    						vs.setEtd(getETD(buffer.readLine()));
+    					}else if(vs.getVvdStatus() == VVD_STATUS.DEPARTED){
+    						vs.setAtd(getETD(buffer.readLine()));
+    					}else{
+    						vs.setEtd(getETD(buffer.readLine()));
+    					}
+    					
     					vs.setBerthNo(getBerthNo(buffer.readLine()));
     					vs.setCct(getCCT(buffer.readLine()));
-    					vs.setDisCnt(Integer.parseInt(getDISCnt(buffer.readLine()).trim() == ""?"0":getDISCnt(buffer.readLine())));
-    					vs.setLoadCnt(Integer.parseInt(getLOADCnt(buffer.readLine()).trim() == ""?"0":getLOADCnt(buffer.readLine())));
+    					vs.setDisCnt(Integer.parseInt(getDISCnt(buffer.readLine()).trim()));
+    					vs.setLoadCnt(Integer.parseInt(getLOADCnt(buffer.readLine()).trim()));
     					
     					vesselScheduleList.add(vs);
             		}

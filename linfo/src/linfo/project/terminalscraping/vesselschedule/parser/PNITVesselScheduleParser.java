@@ -131,13 +131,20 @@ public class PNITVesselScheduleParser extends VesselScheduleParser{
         					vs.setShiftCnt(Integer.parseInt(getShiftCnt(sJobCnt)));
         					buffer.readLine();
         					
-        					if (getVVDStatus(buffer.readLine()).equals("DEPARTED")){
+        					String vvdStatusLine = buffer.readLine();
+        					if (getVVDStatus(vvdStatusLine).equals("DEPARTED")){
         						vs.setVvdStatus(VVD_STATUS.DEPARTED);
-        					}else if (getVVDStatus(buffer.readLine()).equals("ARRIVED")){
+        						vs.setAtb(vs.getEtb());
+        						vs.setAtd(vs.getEtd());
+        						vs.setEtb("");
+        						vs.setEtd("");
+        					}else if (getVVDStatus(vvdStatusLine).equals("ARRIVED")){
         						vs.setVvdStatus(VVD_STATUS.BERTHING);
-        					}else if (getVVDStatus(buffer.readLine()).equals("PLANNED")){
+        						vs.setAtb(vs.getEtb());
+        						vs.setEtb("");
+        					}else if (getVVDStatus(vvdStatusLine).equals("PLANNED")){
         						vs.setVvdStatus(VVD_STATUS.PLANNED);
-       					}else {
+	       					}else {
         						vs.setVvdStatus(VVD_STATUS.UNKNOWN);
         					}
         					

@@ -108,9 +108,9 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
             			buffer.readLine();
             			String sInfo = buffer.readLine();
             			
-            			if (getVVDStatus(sInfo).contains("출항")){
+            			if (getVVDStatus(sInfo).equals("출항")){
             				vs.setVvdStatus(VVD_STATUS.DEPARTED);
-            			}else if (getVVDStatus(sInfo).contains("접안중")){
+            			}else if (getVVDStatus(sInfo).equals("접안")){
             				vs.setVvdStatus(VVD_STATUS.BERTHING);
             			}else if (getVVDStatus(sInfo).contains("접안예정")){
             				vs.setVvdStatus(VVD_STATUS.PLANNED);
@@ -127,14 +127,26 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
             			buffer.readLine();
             			String sChkEmptyLine = buffer.readLine();
             			if(sChkEmptyLine.trim().length() < 1){
-            				vs.setEtb(getETB(buffer.readLine()));
+            				if(vs.getVvdStatus() == VVD_STATUS.PLANNED){
+            					vs.setEtb(getETB(buffer.readLine()));
+            				}else{
+            					vs.setAtb(getETB(buffer.readLine()));
+            				}
             			}else{
-            				vs.setEtb(getETB(sChkEmptyLine));
+            				if(vs.getVvdStatus() == VVD_STATUS.PLANNED){
+            					vs.setEtb(getETB(sChkEmptyLine));
+            				}else{
+            					vs.setAtb(getETB(sChkEmptyLine));
+            				}
             			}
             				
             			
             			buffer.readLine();
-            			vs.setEtd(getETD(buffer.readLine()));
+            			if(vs.getVvdStatus() == VVD_STATUS.DEPARTED){
+            				vs.setAtd(getETD(buffer.readLine()));
+        				}else{
+        					vs.setEtd(getETD(buffer.readLine()));
+        				}
             			buffer.readLine();
             			vs.setCct(getCCT(buffer.readLine()));
             			
