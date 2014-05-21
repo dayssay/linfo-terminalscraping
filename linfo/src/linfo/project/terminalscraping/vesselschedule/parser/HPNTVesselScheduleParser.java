@@ -123,8 +123,23 @@ public class HPNTVesselScheduleParser extends VesselScheduleParser{
     					buffer.readLine();
     					buffer.readLine();
     					buffer.readLine();
-    					vs.setEtb(getETB(buffer.readLine()));
-    					vs.setEtd(getETD(buffer.readLine()));
+    					
+    					if(vs.getVvdStatus() == VVD_STATUS.PLANNED){
+    						vs.setEtb(getETB(buffer.readLine()));
+    					}else if(vs.getVvdStatus() == VVD_STATUS.BERTHING || vs.getVvdStatus() == VVD_STATUS.DEPARTED){
+    						vs.setAtb(getETB(buffer.readLine()));
+    					}else{
+    						vs.setEtb(getETB(buffer.readLine()));
+    					}
+    					
+    					if(vs.getVvdStatus() == VVD_STATUS.PLANNED || vs.getVvdStatus() == VVD_STATUS.BERTHING){
+    						vs.setEtd(getETD(buffer.readLine()));
+    					}else if(vs.getVvdStatus() == VVD_STATUS.DEPARTED){
+    						vs.setAtd(getETD(buffer.readLine()));
+    					}else{
+    						vs.setEtd(getETD(buffer.readLine()));
+    					}
+    					
     					String sJobCnt = buffer.readLine();
     					vs.setDisCnt(Integer.parseInt(getDISCnt(sJobCnt)));
     					vs.setLoadCnt(Integer.parseInt(getLOADCnt(sJobCnt)));

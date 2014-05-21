@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 
 import linfo.project.terminalscraping.objects.VesselSchedule;
+import linfo.project.terminalscraping.objects.VesselSchedule.VVD_STATUS;
 import linfo.project.util.Util;
 
 public class KBCTVesselScheduleParser extends VesselScheduleParser{
@@ -107,6 +108,16 @@ public class KBCTVesselScheduleParser extends VesselScheduleParser{
             			vs.setLoadCnt(Integer.parseInt(getLOADCnt(buffer.readLine())));
             			vs.setShiftCnt(Integer.parseInt(getShiftCnt(buffer.readLine())));
             			buffer.readLine();
+            			
+            			if(vs.getEtb() != "" && vs.getEtd() != "" && vs.getAtb() != "" && vs.getAtd() != ""){
+                			vs.setVvdStatus(VVD_STATUS.DEPARTED);
+                		}else if(vs.getEtb() != "" && vs.getEtd() != "" && vs.getAtb() != "" && vs.getAtd() == ""){
+                			vs.setVvdStatus(VVD_STATUS.BERTHING);
+                		}else if(vs.getEtb() != "" && vs.getEtd() != "" && vs.getAtb() == "" && vs.getAtd() == ""){
+                			vs.setVvdStatus(VVD_STATUS.PLANNED);
+                		}else{
+                			vs.setVvdStatus(VVD_STATUS.UNKNOWN);
+                		}
             			
             			vesselScheduleList.add(vs);
             			iStart = 0;

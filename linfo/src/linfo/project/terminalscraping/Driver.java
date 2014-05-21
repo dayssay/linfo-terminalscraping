@@ -41,7 +41,7 @@ public class Driver implements Job {
 				//각 터미널 ID에 맞는 VesselScheduleParser를 가져옴
 				VesselScheduleParser parser = new VesselScheduleParserFactory().getParser(t.getId());
 				
-				if(t.getId().equals("PNIT") && parser != null){
+				if(t.getId().equals("KBCT") && parser != null){
 					System.out.println("++++" + getSystemDateTime() + " : " + t.getId() + " Prcessed");
 					String htmlCode = s.getHtml(t);
 					
@@ -52,7 +52,7 @@ public class Driver implements Job {
 					pstmt.setString(2, getSystemTime());
 					pstmt.setString(3, t.getId());
 					pstmt.setString(4, htmlCode);
-//					pstmt.executeUpdate();
+					pstmt.executeUpdate();
 					
 					for(VesselSchedule vs : parser.extractVesselSchedule(htmlCode)){
 						sql = "INSERT INTO T_VESSEL_SCHEDULE_HISTORY "
@@ -85,14 +85,7 @@ public class Driver implements Job {
 						pstmt.setString(17, String.valueOf(vs.getDisCnt()));
 						pstmt.setString(18, String.valueOf(vs.getShiftCnt()));
 						pstmt.setString(19, vs.getVvdStatus().name());
-						System.out.println(vs.getVvd() 
-										+ " / " + vs.getVvdStatus().name()
-										+ " / " + vs.getEtb()
-										+ " / " + vs.getEtd()
-										+ " / " + vs.getAtb()
-										+ " / " + vs.getAtd()
-										);
-//						pstmt.executeUpdate();
+						pstmt.executeUpdate();
 					}
 		
 				}
@@ -102,38 +95,30 @@ public class Driver implements Job {
 	
 	
 	public static void main(String[] args){
-//		try{
-//			SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
-//	
-//			Scheduler sched = schedFact.getScheduler();
-//			
-//			sched.start();
-//			JobDetail job = newJob(Driver.class).withIdentity("vesselScheduleJob", "vesselSchedule").build();
-//			Trigger trigger = newTrigger().withIdentity("vesselScheduleTrigger", "vesselSchedule").withSchedule(cronSchedule("0 0,30 * * * ?")).forJob("vesselScheduleJob", "vesselSchedule").build();
-//			
-//			sched.scheduleJob(job, trigger);
-//		}catch(Exception e){
-//			Util.exceptionProc(e);
-//		}
-		
-		Driver d = new Driver();
-		try {
-			d.runScrapper();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		try{
+			SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
+	
+			Scheduler sched = schedFact.getScheduler();
+			
+			sched.start();
+			JobDetail job = newJob(Driver.class).withIdentity("vesselScheduleJob", "vesselSchedule").build();
+			Trigger trigger = newTrigger().withIdentity("vesselScheduleTrigger", "vesselSchedule").withSchedule(cronSchedule("0 0,30 * * * ?")).forJob("vesselScheduleJob", "vesselSchedule").build();
+			
+			sched.scheduleJob(job, trigger);
+		}catch(Exception e){
+			Util.exceptionProc(e);
 		}
+		
 	}
 	
 	
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-		try{
+		try {
 			runScrapper();
-		}catch(Exception e){
+		} catch (Exception e) {
 			Util.exceptionProc(e);
 		}
-		
 	}
 }
