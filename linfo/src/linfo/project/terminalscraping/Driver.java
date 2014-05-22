@@ -41,7 +41,7 @@ public class Driver implements Job {
 				//각 터미널 ID에 맞는 VesselScheduleParser를 가져옴
 				VesselScheduleParser parser = new VesselScheduleParserFactory().getParser(t.getId());
 				
-				if(t.getId().equals("KBCT") && parser != null){
+				if(parser != null){
 					System.out.println("++++" + getSystemDateTime() + " : " + t.getId() + " Prcessed");
 					String htmlCode = s.getHtml(t);
 					
