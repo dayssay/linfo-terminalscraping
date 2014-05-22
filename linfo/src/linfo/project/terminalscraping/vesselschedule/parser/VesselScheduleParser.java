@@ -186,7 +186,7 @@ public class VesselScheduleParser{
 	* @return String 적하 작업 수량
 	*/
 	protected String getLOADCnt(String html) {
-		return getData(html).trim() == "" ? "0":getData(html).trim();
+		return getData(html).trim().equals("") ? "0":getData(html).trim();
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class VesselScheduleParser{
 	* @return String 양하 작업 수량
 	*/
 	protected String getDISCnt(String html) {
-		return getData(html).trim() == "" ? "0":getData(html).trim();
+		return getData(html).trim().equals("") ? "0":getData(html).trim();
 	}
 
 	/**
@@ -204,7 +204,7 @@ public class VesselScheduleParser{
 	* @return String Shifting 작업 수량
 	*/
 	protected String getShiftCnt(String html) {
-		return getData(html).trim() == "" ? "0":getData(html).trim();
+		return getData(html).trim().equals("") ? "0":getData(html).trim();
 	}
 
 	/**
