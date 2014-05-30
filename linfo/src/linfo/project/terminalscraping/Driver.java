@@ -54,6 +54,7 @@ public class Driver implements Job {
 						pstmt.setString(3, t.getId());
 						pstmt.setString(4, htmlCode);
 						pstmt.executeUpdate();
+						pstmt.close();
 						
 						for(VesselSchedule vs : parser.extractVesselSchedule(htmlCode)){
 //							System.out.println(t.getId()
@@ -107,7 +108,10 @@ public class Driver implements Job {
 							pstmt.setString(18, String.valueOf(vs.getShiftCnt()));
 							pstmt.setString(19, vs.getVvdStatus().name());
 							pstmt.executeUpdate();
+							pstmt.close();
 						}
+						
+						
 			
 					}
 				}
