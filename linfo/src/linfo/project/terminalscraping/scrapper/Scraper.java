@@ -3,11 +3,13 @@ package linfo.project.terminalscraping.scrapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
 import linfo.project.terminalscraping.objects.TerminalWebSite;
 import linfo.project.util.Util;
+import static linfo.project.util.Util.getDateAfter;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -83,41 +85,61 @@ public class Scraper {
 			Document terminalDoc = Util.getXMLDocument(this.filePath + this.TERMINAL_LIST_FILE_NAME);;
 			NodeList itemNode = terminalDoc.getElementsByTagName(this.items.get(item));
 			
-			NodeList terminalNode = ((Element)itemNode.item(0)).getElementsByTagName("terminal");
+			NodeList siteNode = ((Element)itemNode.item(0)).getElementsByTagName("site");
 			
 			
-			for(int i = 0; i < terminalNode.getLength() ; i++){
-				Element terminalElement = (Element)terminalNode.item(i);
+			for(int i = 0; i < siteNode.getLength() ; i++){
+				Element siteElement = (Element)siteNode.item(i);
 				TerminalWebSite t = new TerminalWebSite();
-				t.setId(terminalElement.getAttribute("id"));
+				t.setId(siteElement.getAttribute("id"));
 				
-				if(terminalElement.getElementsByTagName("name").getLength() > 0){
-					Element nameElement = (Element)terminalElement.getElementsByTagName("name").item(0);
+				if(siteElement.getElementsByTagName("terminal").getLength() > 0){
+					Element terminalElement = (Element)siteElement.getElementsByTagName("terminal").item(0);
+					t.setTerminalId(terminalElement.getTextContent());
+				}
+				
+				if(siteElement.getElementsByTagName("name").getLength() > 0){
+					Element nameElement = (Element)siteElement.getElementsByTagName("name").item(0);
 					t.setTerminalName(nameElement.getTextContent());
 				}
 				
-				if(terminalElement.getElementsByTagName("url").getLength() > 0){
-					Element urlElement = (Element)terminalElement.getElementsByTagName("url").item(0);
+				if(siteElement.getElementsByTagName("url").getLength() > 0){
+					Element urlElement = (Element)siteElement.getElementsByTagName("url").item(0);
 					t.setUrl(urlElement.getTextContent());
 				}
 				
-				if(terminalElement.getElementsByTagName("encoding").getLength() > 0){
-					Element encodingElement = (Element)terminalElement.getElementsByTagName("encoding").item(0);
+				if(siteElement.getElementsByTagName("encoding").getLength() > 0){
+					Element encodingElement = (Element)siteElement.getElementsByTagName("encoding").item(0);
 					t.setEncoding(encodingElement.getTextContent());
 				}
 				
-				if(terminalElement.getElementsByTagName("cookie-url").getLength() > 0){
-					Element encodingElement = (Element)terminalElement.getElementsByTagName("cookie-url").item(0);
+				if(siteElement.getElementsByTagName("cookie-url").getLength() > 0){
+					Element encodingElement = (Element)siteElement.getElementsByTagName("cookie-url").item(0);
 					t.setCookieUrl(encodingElement.getTextContent());
 				}
 				
-				NodeList paramNode = terminalElement.getElementsByTagName("param");
+				NodeList paramNode = siteElement.getElementsByTagName("param");
 				for(int j = 0; j < paramNode.getLength() ; j++){
 					Element paramElement = (Element)paramNode.item(j);
-					t.putParam(paramElement.getAttribute("key"), paramElement.getTextContent());
+					String value = paramElement.getTextContent();
+					if (value.contains("[SYSDATE(-)")){
+						value = getDateAfter("-", Integer.parseInt(value.replace("[SYSDATE(-)", "").replace("]", "").trim()));
+					}else if (value.contains("[SYSDATE(/)")){
+						value = getDateAfter("/", Integer.parseInt(value.replace("[SYSDATE(/)", "").replace("]", "").trim()));
+					}else if (value.contains("[SYSDATE.YEAR")){
+						value = getDateAfter(Calendar.YEAR, Integer.parseInt(value.replace("[SYSDATE.YEAR", "").replace("]", "").trim()));
+					}else if (value.contains("[SYSDATE.MONTH")){
+						value = getDateAfter(Calendar.MONTH, Integer.parseInt(value.replace("[SYSDATE.MONTH", "").replace("]", "").trim()));
+					}else if (value.contains("[SYSDATE.DAY_OF_MONTH")){
+						value = getDateAfter(Calendar.DAY_OF_MONTH, Integer.parseInt(value.replace("[SYSDATE.DAY_OF_MONTH", "").replace("]", "").trim()));
+					}else if (value.contains("[SYSDATE")){
+						value = getDateAfter(Integer.parseInt(value.replace("[SYSDATE", "").replace("]", "").trim()));
+					}
+					
+					t.putParam(paramElement.getAttribute("key"), value);
 				}
 				
-				NodeList requestPropertyNode = terminalElement.getElementsByTagName("request-property");
+				NodeList requestPropertyNode = siteElement.getElementsByTagName("request-property");
 				for(int j = 0; j < requestPropertyNode.getLength() ; j++){
 					Element requestPropertyElement = (Element)requestPropertyNode.item(j);
 					t.putRequestProperty(requestPropertyElement.getAttribute("key"), requestPropertyElement.getTextContent());

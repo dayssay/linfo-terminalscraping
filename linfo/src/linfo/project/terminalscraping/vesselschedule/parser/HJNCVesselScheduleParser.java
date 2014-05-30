@@ -137,7 +137,9 @@ public class HJNCVesselScheduleParser extends VesselScheduleParser{
     					buffer.readLine();
     					vs.setRoute(getRoute(buffer.readLine()));
     					
-    					vesselScheduleList.add(vs);
+    					if (vs.getVvd().trim().length() > 0){
+    						vesselScheduleList.add(vs);
+    					}
             		}
             	}
             }

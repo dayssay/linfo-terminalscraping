@@ -75,6 +75,61 @@ public class Util {
 	
 	
 	/**
+	* 며칠 후 의 날자를 반환한다
+	* @return yyyymmdd
+	*/
+	public static String getDateAfter(int amount){
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH, amount);
+		return String.format("%04d", c.get(Calendar.YEAR)) 
+				+ String.format("%02d", c.get(Calendar.MONTH) + 1)
+				+ String.format("%02d", c.get(Calendar.DAY_OF_MONTH));
+	}
+	
+	
+	
+	/**
+	* 며칠 후 의 날자 요소 (년, 월, 일)을 반환한다
+	* @param field Calendar.YEAR 또는 Calendar.MONTH 또는 Calendar.DAY_OF_MONTH
+	* @param amount 며칠 후 를 조회 할 것인가
+	* @return yyyy 또는 mm 또는 dd
+	*/
+	public static String getDateAfter(int field, int amount){
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH, amount);
+		
+		if (field == Calendar.YEAR){
+			return String.format("%04d", c.get(Calendar.YEAR));
+		}else if (field == Calendar.MONTH){
+			return String.format("%02d", c.get(Calendar.MONTH) + 1);
+		}else if (field == Calendar.DAY_OF_MONTH){
+			return String.format("%02d", c.get(Calendar.DAY_OF_MONTH));
+		}else{
+			return String.format("%04d", c.get(Calendar.YEAR)) 
+					+ String.format("%02d", c.get(Calendar.MONTH) + 1)
+					+ String.format("%02d", c.get(Calendar.DAY_OF_MONTH));
+		}
+		
+	}
+	
+	
+	
+	/**
+	* 며칠 후 의 날자를 반환한다
+	* @param separator 년, 월, 일 구분자
+	* @param amount 며칠 후 를 조회 할 것인가
+	* @return yyyy (separator) mm (separator) dd 의 형태(separator로 년,월,일 을 구분함)
+	*/
+	public static String getDateAfter(String separator, int amount){
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH, amount);
+		return String.format("%04d", c.get(Calendar.YEAR)) 
+				+ separator + String.format("%02d", c.get(Calendar.MONTH) + 1)
+				+ separator + String.format("%02d", c.get(Calendar.DAY_OF_MONTH));
+	}
+	
+	
+	/**
 	* 현재 시스템의 시간을 반환한다
 	* @return hh24miss
 	*/

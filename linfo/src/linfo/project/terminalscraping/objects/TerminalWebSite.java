@@ -1,10 +1,12 @@
 package linfo.project.terminalscraping.objects;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 // Terminal Web Site
 public class TerminalWebSite {
 	private String id;
+	private String terminalId;
 	private String terminalName;
 	private String url;
 	private String encoding;
@@ -30,6 +32,12 @@ public class TerminalWebSite {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public String getTerminalId() {
+		return terminalId;
+	}
+	public void setTerminalId(String terminalId) {
+		this.terminalId = terminalId;
 	}
 	public String getTerminalName() {
 		return terminalName;
@@ -73,6 +81,5 @@ public class TerminalWebSite {
 	public void putRequestProperty(String key, String value){
 		this.reqeustProperty.put(key, value);
 	}
-	
-	
+
 }

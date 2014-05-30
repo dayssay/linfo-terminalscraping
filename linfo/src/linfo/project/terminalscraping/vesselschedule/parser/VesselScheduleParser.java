@@ -32,7 +32,7 @@ public class VesselScheduleParser{
 	private String getData(String html){
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 1)
-			return (sTemp[1].split("<"))[0].trim();
+			return (sTemp[1].split("<"))[0].replace("&nbsp;", "").trim();
 		else
 			return "";
 	}
@@ -48,8 +48,7 @@ public class VesselScheduleParser{
 		Pattern tag = Pattern.compile("<(\"[^\"]*\"|\'[^\']*\'|[^\'\">])*>");  
 		Matcher mat = tag.matcher(html);  
 		result = mat.replaceAll(""); 
-		
-		return result;
+		return result.replace("&nbsp;", "");
 	}
 
 	/**

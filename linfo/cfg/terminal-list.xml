@@ -2,26 +2,37 @@
 <!-- terminal-list.xml -->
 
 <vessel-schedule-list>
-	<terminal id="BIT">
+	<site id="BIT">
+		<terminal>BIT</terminal>
 		<name>Busan International Terminals</name>
 		<url>http://www.sbtc.co.kr/ebiz/</url>
-		<param key="code">01</param>
 		<encoding>euc-kr</encoding>
-	</terminal>
+		<param key="code">01</param>
+		<param key="subp">1</param>
+		<param key="txt1">[SYSDATE-1]</param>
+		<param key="txt2">[SYSDATE+14]</param>
+	</site>
 	
-	<terminal id="BNCT">
+	<site id="BNCT">
+		<terminal>BNCT</terminal>
 		<name>Busan New Container Terminal</name>
 		<url>http://www.bnctkorea.com/infoservice/webpage/vessel/vslScheduleText.jsp</url>
 		<encoding>euc-kr</encoding>
-	</terminal>
+		<param key="isSearch">Y</param>
+		<param key="page">1</param>
+		<param key="strdStDate">[SYSDATE(-)-1]</param>
+		<param key="strdEdDate">[SYSDATE(-)+14]</param>
+	</site>
 	
-	<terminal id="DPCT">
+	<site id="DPCT">
+		<terminal>DPCT</terminal>
 		<name>Dongbu Busan Container Terminal</name>
 		<url>http://pus.dpct.co.kr/info/sunsuk/E71W001S.asp</url>
 		<encoding>euc-kr</encoding>
-	</terminal>
+	</site>
 	
-	<terminal id="HJNC">
+	<site id="HJNC">
+		<terminal>HJNC</terminal>
 		<name>Hanjin Newport Co.</name>
 		<url>http://esvc.hjnc.co.kr/esvc/berth/BerthAction.do</url>
 		<encoding>euc-kr</encoding>
@@ -29,39 +40,73 @@
 		<param key="menuID">01</param>
 		<param key="subMenuID">1</param>
 		<param key="pgID">01</param>
-	</terminal>
+		<param key="scPeriod">14</param>
+		<param key="rowPerPage">100</param>
+	</site>
 	
-	<terminal id="HKTL">
+	<site id="HKTL1">
+		<terminal>HKTL</terminal>
 		<name>Hutchison Korea Terminals</name>
 		<url>https://custom.hktl.com/jsp/T01/sunsuk.jsp</url>
 		<encoding>euc-kr</encoding>
-	</terminal>
+		<param key="currentPage">1</param>
+	</site>
+	<site id="HKTL2">
+		<terminal>HKTL</terminal>
+		<name>Hutchison Korea Terminals</name>
+		<url>https://custom.hktl.com/jsp/T01/sunsuk.jsp</url>
+		<encoding>euc-kr</encoding>
+		<param key="currentPage">2</param>
+	</site>
+	<site id="HKTL3">
+		<terminal>HKTL</terminal>
+		<name>Hutchison Korea Terminals</name>
+		<url>https://custom.hktl.com/jsp/T01/sunsuk.jsp</url>
+		<encoding>euc-kr</encoding>
+		<param key="currentPage">3</param>
+	</site>
 	
-	<terminal id="PNC">
+	<site id="PNC">
+		<terminal>PNC</terminal>
 		<name>Pusan Newport Co. Ltd.</name>
 		<url>http://svc.pncport.com/info/ShipBerthT.pnc</url>
 		<encoding>utf-8</encoding>
-	</terminal>
+		<param key="STARTDATE">[SYSDATE-1]</param>
+		<param key="ENDDATE">[SYSDATE+14]</param>
+	</site>
 	
-	<terminal id="PNIT">
+	<site id="PNIT">
+		<terminal>PNIT</terminal>
 		<name>Pusan Newport International Terminal</name>
 		<url>http://www.pnitl.com/infoservice/webpage/vessel/vslScheduleText.jsp</url>
 		<encoding>euc-kr</encoding>
-	</terminal>
+		<param key="strdStDate">[SYSDATE(-)-1]</param>
+		<param key="strdEdDate">[SYSDATE(-)+14]</param>
+	</site>
 	
-	<terminal id="HPNT">
+	<site id="HPNT">
+		<terminal>HPNT</terminal>
 		<name>HYUNDAI PUSAN NEW-PORT TERMINAL</name>
 		<url>http://www.hpnt.co.kr/infoservice/vvdchart</url>
 		<encoding>euc-kr</encoding>
+		<param key="FROM_DTE">[SYSDATE(-)-1]</param>
+		<param key="TO_DTE">[SYSDATE(-)+14]</param>
 		<cookie-url>http://www.hpnt.co.kr/infoservice/</cookie-url>
-	</terminal>
+	</site>
 	
-	<terminal id="KBCT">
+	<site id="KBCT">
+		<terminal>KBCT</terminal>
 		<name>CJ Korea Express Busan Container Terminal Corp.</name>
 		<url>http://www.kbct.co.kr/Berth_status_text_servlet_sw_kr</url>
 		<encoding>euc-kr</encoding>
-		<param key="v_time">3days</param>
+		<param key="v_time">term</param>
 		<param key="ORDER">item2</param>
+		<param key="YEAR1">[SYSDATE.YEAR-1]</param>
+		<param key="MONTH1">[SYSDATE.MONTH-1]</param>
+		<param key="DAY1">[SYSDATE.DAY_OF_MONTH-1]</param>
+		<param key="YEAR2">[SYSDATE.YEAR+14]</param>
+		<param key="MONTH2">[SYSDATE.MONTH+14]</param>
+		<param key="DAY2">[SYSDATE.DAY_OF_MONTH+14]</param>
 		<cookie-url>http://www.kbct.co.kr/content/sw/frame/berth_status_text_frame_sw_kr.jsp?p_id=CONT_CN_KR&amp;search=Y&amp;snb_num=2</cookie-url>
-	</terminal>
+	</site>
 </vessel-schedule-list>

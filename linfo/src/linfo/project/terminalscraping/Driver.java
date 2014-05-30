@@ -37,63 +37,85 @@ public class Driver implements Job {
 		Connection conn = ods.getConnection();
 		
 		for(String item : s.getItems()){
-			for(TerminalWebSite t : s.getTerminalList(item)){
-				//각 터미널 ID에 맞는 VesselScheduleParser를 가져옴
-				VesselScheduleParser parser = new VesselScheduleParserFactory().getParser(t.getId());
-				
-				if(parser != null){
-					System.out.println("++++" + getSystemDateTime() + " : " + t.getId() + " Prcessed");
-					String htmlCode = s.getHtml(t);
+			if(item.equals("VesselSchedule")){
+				for(TerminalWebSite t : s.getTerminalList(item)){
+					//각 터미널 ID에 맞는 VesselScheduleParser를 가져옴
+					VesselScheduleParser parser = new VesselScheduleParserFactory().getParser(t.getTerminalId());
 					
-					String sql = "INSERT INTO T_RAW_HTML(SCRAP_DT, SCRAP_TM, TERMINAL_ID, HTML)"
-								+ "VALUES(?, ?, ?, ?)";
-					PreparedStatement pstmt = conn.prepareStatement(sql);
-					pstmt.setString(1, getSystemDate());
-					pstmt.setString(2, getSystemTime());
-					pstmt.setString(3, t.getId());
-					pstmt.setString(4, htmlCode);
-					pstmt.executeUpdate();
-					
-					for(VesselSchedule vs : parser.extractVesselSchedule(htmlCode)){
-						sql = "INSERT INTO T_VESSEL_SCHEDULE_HISTORY "
-								+ " (INS_DT, INS_TM, TERMINAL_ID, BERTH_NO, OPR"
-								+ ", VVD, IN_VVD_OPR, OUT_VVD_OPR, VSL_NAME, ROUTE"
-								+ ", CCT, ETB, ETD, ATB, ATD"
-								+ ", LOAD_CNT, DIS_CNT, SHIFT_CNT, VVD_STATUS)"
-								+ " VALUES(?, ?, ?, ?, ?"
-								+ "        , ?, ?, ?, ?, ?"
-								+ "        , ?, ?, ?, ?, ?"
-								+ "        , ?, ?, ?, ?)";
+					if(parser != null){
+						System.out.println("++++" + getSystemDateTime() + " : " + t.getId() + " Prcessed");
+						String htmlCode = s.getHtml(t);
 						
-						pstmt = conn.prepareStatement(sql);
+						String sql = "INSERT INTO T_RAW_HTML(SCRAP_DT, SCRAP_TM, TERMINAL_ID, HTML)"
+									+ "VALUES(?, ?, ?, ?)";
+						PreparedStatement pstmt = conn.prepareStatement(sql);
 						pstmt.setString(1, getSystemDate());
 						pstmt.setString(2, getSystemTime());
 						pstmt.setString(3, t.getId());
-						pstmt.setString(4, vs.getBerthNo());
-						pstmt.setString(5, vs.getOpr());
-						pstmt.setString(6, vs.getVvd());
-						pstmt.setString(7, vs.getInVvdForShippingCom());
-						pstmt.setString(8, vs.getOutVvdForShippingCom());
-						pstmt.setString(9, vs.getVslName());
-						pstmt.setString(10, vs.getRoute());
-						pstmt.setString(11, vs.getCct());
-						pstmt.setString(12, vs.getEtb());
-						pstmt.setString(13, vs.getEtd());
-						pstmt.setString(14, vs.getAtb());
-						pstmt.setString(15, vs.getAtd());
-						pstmt.setString(16, String.valueOf(vs.getLoadCnt()));
-						pstmt.setString(17, String.valueOf(vs.getDisCnt()));
-						pstmt.setString(18, String.valueOf(vs.getShiftCnt()));
-						pstmt.setString(19, vs.getVvdStatus().name());
+						pstmt.setString(4, htmlCode);
 						pstmt.executeUpdate();
+						
+						for(VesselSchedule vs : parser.extractVesselSchedule(htmlCode)){
+//							System.out.println(t.getId()
+//												+ " / " + vs.getBerthNo()
+//												+ " / " + vs.getOpr()
+//												+ " / " + vs.getVvd()
+//												+ " / " + vs.getInVvdForShippingCom()
+//												+ " / " + vs.getOutVvdForShippingCom()
+//												+ " / " + vs.getVslName()
+//												+ " / " + vs.getRoute()
+//												+ " / " + vs.getCct()
+//												+ " / " + vs.getEtb()
+//												+ " / " + vs.getEtd()
+//												+ " / " + vs.getAtb()
+//												+ " / " + vs.getAtd()
+//												+ " / " + String.valueOf(vs.getLoadCnt())
+//												+ " / " + String.valueOf(vs.getDisCnt())
+//												+ " / " + String.valueOf(vs.getShiftCnt())
+//												+ " / " + vs.getVvdStatus().name()
+//												);
+
+							
+							sql = "INSERT INTO T_VESSEL_SCHEDULE_HISTORY "
+									+ " (INS_DT, INS_TM, TERMINAL_ID, BERTH_NO, OPR"
+									+ ", VVD, IN_VVD_OPR, OUT_VVD_OPR, VSL_NAME, ROUTE"
+									+ ", CCT, ETB, ETD, ATB, ATD"
+									+ ", LOAD_CNT, DIS_CNT, SHIFT_CNT, VVD_STATUS)"
+									+ " VALUES(?, ?, ?, ?, ?"
+									+ "        , ?, ?, ?, ?, ?"
+									+ "        , ?, ?, ?, ?, ?"
+									+ "        , ?, ?, ?, ?)";
+							
+							pstmt = conn.prepareStatement(sql);
+							pstmt.setString(1, getSystemDate());
+							pstmt.setString(2, getSystemTime());
+							pstmt.setString(3, t.getId());
+							pstmt.setString(4, vs.getBerthNo());
+							pstmt.setString(5, vs.getOpr());
+							pstmt.setString(6, vs.getVvd());
+							pstmt.setString(7, vs.getInVvdForShippingCom());
+							pstmt.setString(8, vs.getOutVvdForShippingCom());
+							pstmt.setString(9, vs.getVslName());
+							pstmt.setString(10, vs.getRoute());
+							pstmt.setString(11, vs.getCct());
+							pstmt.setString(12, vs.getEtb());
+							pstmt.setString(13, vs.getEtd());
+							pstmt.setString(14, vs.getAtb());
+							pstmt.setString(15, vs.getAtd());
+							pstmt.setString(16, String.valueOf(vs.getLoadCnt()));
+							pstmt.setString(17, String.valueOf(vs.getDisCnt()));
+							pstmt.setString(18, String.valueOf(vs.getShiftCnt()));
+							pstmt.setString(19, vs.getVvdStatus().name());
+							pstmt.executeUpdate();
+						}
+			
 					}
-		
 				}
 			}
 		}
-		
 		conn.close();
 	}
+	
 	
 	
 	public static void main(String[] args){
@@ -107,6 +129,9 @@ public class Driver implements Job {
 			Trigger trigger = newTrigger().withIdentity("vesselScheduleTrigger", "vesselSchedule").withSchedule(cronSchedule("0 0,30 * * * ?")).forJob("vesselScheduleJob", "vesselSchedule").build();
 			
 			sched.scheduleJob(job, trigger);
+			
+//			Driver d = new Driver();
+//			d.runScrapper();
 		}catch(Exception e){
 			Util.exceptionProc(e);
 		}
