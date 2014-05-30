@@ -260,7 +260,7 @@ public class BITVesselScheduleParser extends VesselScheduleParser{
 	protected String getCCT(String html) {
 		String[] sTemp = html.split(">");
 		if(sTemp.length > 2)
-			return (sTemp[2].split("<"))[0].trim().replace("/", "").replace(" ", "").replace(":", "").substring(0, 12);
+			return (sTemp[2].split("<"))[0].trim().replace("-", "").replace(" ", "").replace(":", "").substring(0, 12);
 		else
 			return "";
 	}

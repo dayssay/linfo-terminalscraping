@@ -14,6 +14,9 @@ public class VesselSchedule {
 //	터미널항차
 	private String vvd;
 	
+//	터미널항차년도
+	private String vvdYear;
+	
 //	입항항차
 	private String inVvdForShippingCom;
 	
@@ -58,6 +61,7 @@ public class VesselSchedule {
 		this.berthNo = "";
 		this.opr = "";
 		this.vvd = "";
+		this.vvdYear = "";
 		this.inVvdForShippingCom = "";
 		this.outVvdForShippingCom = "";
 		this.vslName = "";
@@ -74,15 +78,20 @@ public class VesselSchedule {
 	}
 	
 	
+	
+	
+	
+	
 	public VesselSchedule(String berthNo, String opr, String vvd,
-			String inVvdForShippingCom, String outVvdForShippingCom,
-			String vslName, String route, String cct, String etb, String etd,
-			String atb, String atd, int loadCnt, int disCnt, int shiftCnt,
-			VVD_STATUS vvdStatus) {
+			String vvdYear, String inVvdForShippingCom,
+			String outVvdForShippingCom, String vslName, String route,
+			String cct, String etb, String etd, String atb, String atd,
+			int loadCnt, int disCnt, int shiftCnt, VVD_STATUS vvdStatus) {
 		super();
 		this.berthNo = berthNo;
 		this.opr = opr;
 		this.vvd = vvd;
+		this.vvdYear = vvdYear;
 		this.inVvdForShippingCom = inVvdForShippingCom;
 		this.outVvdForShippingCom = outVvdForShippingCom;
 		this.vslName = vslName;
@@ -97,9 +106,12 @@ public class VesselSchedule {
 		this.shiftCnt = shiftCnt;
 		this.vvdStatus = vvdStatus;
 	}
-	
-	
-	
+
+
+
+
+
+
 	public String getBerthNo() {
 		return berthNo;
 	}
@@ -117,6 +129,12 @@ public class VesselSchedule {
 	}
 	public void setVvd(String vvd) {
 		this.vvd = vvd;
+	}
+	public String getVvdYear() {
+		return vvdYear;
+	}
+	public void setVvdYear(String vvdYear) {
+		this.vvdYear = vvdYear;
 	}
 	public String getInVvdForShippingCom() {
 		return inVvdForShippingCom;

@@ -211,6 +211,7 @@ public class DPCTVesselScheduleParser extends VesselScheduleParser {
 		            				break;
 		            			case 4:
 		            				vs.setVvd(this.getVVD(line));
+		            				vs.setVvdYear(this.getVVDYear(line));
 		            				dataIndex++;
 		            				break;
 		            			case 6:
@@ -285,6 +286,19 @@ public class DPCTVesselScheduleParser extends VesselScheduleParser {
         }
 		
 		return vesselScheduleList;
+	}
+
+
+	@Override
+	protected String getVVD(String html) {
+		String[] vvdArray = super.getVVD(html).split("-");
+		return vvdArray[0] + "-" + String.format("%03d", Integer.parseInt(vvdArray[1]));
+	}
+	
+	
+	private String getVVDYear(String html){
+		String[] vvdArray = super.getVVD(html).split("-");
+		return vvdArray[2];
 	}
 	
 	

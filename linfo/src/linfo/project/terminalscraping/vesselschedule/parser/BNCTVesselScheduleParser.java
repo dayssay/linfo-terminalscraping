@@ -177,7 +177,7 @@ public class BNCTVesselScheduleParser extends VesselScheduleParser{
 	
 	@Override
 	protected String getVVD(String pHtml) {
-		return pHtml.trim();
+		return pHtml.trim().substring(0, 4) + "-" + pHtml.trim().substring(4, 7);
 	}
 	
 	@Override

@@ -5,7 +5,9 @@ import java.io.StringReader;
 import java.util.ArrayList;
 
 import linfo.project.terminalscraping.objects.VesselSchedule;
+import linfo.project.terminalscraping.objects.VesselSchedule.VVD_STATUS;
 import linfo.project.util.Util;
+import static linfo.project.util.Util.getSystemDateTime;
 
 public class HKTLVesselScheduleParser extends VesselScheduleParser{
 	@Override
@@ -172,6 +174,11 @@ public class HKTLVesselScheduleParser extends VesselScheduleParser{
 		            				break;
 		            			case 4:
 		            				vs.setEtb(this.getETB(line));
+		            				if (Long.parseLong(this.getETB(line).length() < 1 ? "999999999999":this.getETB(line)) <= Long.parseLong(getSystemDateTime().substring(0, 12))){
+		            					vs.setVvdStatus(VVD_STATUS.BERTHING);
+		            				}else{
+		            					vs.setVvdStatus(VVD_STATUS.PLANNED);
+		            				}
 		            				dataIndex++;
 		            				break;
 		            			case 5:
@@ -179,6 +186,9 @@ public class HKTLVesselScheduleParser extends VesselScheduleParser{
 		            				break;
 		            			case 6:
 		            				vs.setEtd(this.getETD(line));
+		            				if (Long.parseLong(this.getETD(line).length() < 1 ? "999999999999":this.getETD(line)) <= Long.parseLong(getSystemDateTime().substring(0, 12))){
+		            					vs.setVvdStatus(VVD_STATUS.DEPARTED);
+		            				}
 		            				dataIndex++;
 		            				break;
 		            			case 7:
