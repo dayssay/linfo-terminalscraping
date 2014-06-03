@@ -113,7 +113,9 @@ public class HPNTVesselScheduleParser extends VesselScheduleParser{
             			buffer.readLine();
             			vs.setBerthNo(getBerthNo(buffer.readLine()));
             			vs.setOpr(getOPR(buffer.readLine()));
-            			vs.setVvd(getVVD(buffer.readLine()));
+            			
+            			String tmpVvd = getVVD(buffer.readLine());
+            			vs.setVvd(tmpVvd.substring(0, 4) + "-" + String.format("%03d", Integer.parseInt(tmpVvd.substring(4, 6))));
             			
             			String sINOUTVVD = buffer.readLine();
             			vs.setInVvdForShippingCom(getINVVDforShippingCom(sINOUTVVD));

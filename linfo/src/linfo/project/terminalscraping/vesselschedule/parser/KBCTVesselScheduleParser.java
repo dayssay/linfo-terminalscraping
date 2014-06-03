@@ -95,7 +95,8 @@ public class KBCTVesselScheduleParser extends VesselScheduleParser{
             			VesselSchedule vs = new VesselSchedule();
             			
             			vs.setBerthNo(getBerthNo(line));
-            			vs.setVvd(getVVD(buffer.readLine()));
+            			String tmpVvd = getVVD(buffer.readLine());
+            			vs.setVvd(tmpVvd.split("-")[0] + "-" + String.format("%03d", Integer.parseInt(tmpVvd.split("-")[1])));
             			vs.setVslName(getVSLName(buffer.readLine()));
             			buffer.readLine();
             			vs.setOpr(getOPR(buffer.readLine()));

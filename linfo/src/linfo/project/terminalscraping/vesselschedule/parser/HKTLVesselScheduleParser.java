@@ -215,6 +215,15 @@ public class HKTLVesselScheduleParser extends VesselScheduleParser{
             			}
             		}
             		if (isVessel){
+            			if (vs.getVvdStatus() == VVD_STATUS.BERTHING || vs.getVvdStatus() == VVD_STATUS.DEPARTED){
+            				vs.setAtb(vs.getEtb());
+            				vs.setEtb("");
+            			}
+            			
+            			if (vs.getVvdStatus() == VVD_STATUS.DEPARTED){
+            				vs.setAtd(vs.getEtd());
+            				vs.setEtd("");
+            			}
             			vesselScheduleList.add(vs);	
             		}
             	}
@@ -232,19 +241,21 @@ public class HKTLVesselScheduleParser extends VesselScheduleParser{
 	
 	@Override
 	protected String getBerthNo(String html) {
-		return super.removeTags(html);
+		return super.removeTags(html).trim();
 	}
 
 
 	@Override
 	protected String getOPR(String html) {
-		return super.removeTags(html);
+		return super.removeTags(html).trim();
 	}
 
 
 	@Override
 	protected String getVVD(String html) {
-		return super.removeTags(html);
+		String tmpVvd = super.removeTags(html).trim();
+		
+		return tmpVvd.substring(0, 4) + "-" + String.format("%03d", Integer.parseInt(tmpVvd.substring(4, 6)));
 	}
 
 
@@ -262,7 +273,7 @@ public class HKTLVesselScheduleParser extends VesselScheduleParser{
 
 	@Override
 	protected String getVSLName(String html) {
-		return super.removeTags(html);
+		return super.removeTags(html.trim());
 	}
 
 

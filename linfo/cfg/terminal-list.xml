@@ -50,6 +50,9 @@
 		<url>https://custom.hktl.com/jsp/T01/sunsuk.jsp</url>
 		<encoding>euc-kr</encoding>
 		<param key="currentPage">1</param>
+		<param key="year">[SYSDATE.YEAR-1]</param>
+		<param key="month">[SYSDATE.MONTH-1]</param>
+		<param key="day">[SYSDATE.DAY_OF_MONTH-1]</param>
 	</site>
 	<site id="HKTL2">
 		<terminal>HKTL</terminal>
@@ -57,6 +60,9 @@
 		<url>https://custom.hktl.com/jsp/T01/sunsuk.jsp</url>
 		<encoding>euc-kr</encoding>
 		<param key="currentPage">2</param>
+		<param key="year">[SYSDATE.YEAR-1]</param>
+		<param key="month">[SYSDATE.MONTH-1]</param>
+		<param key="day">[SYSDATE.DAY_OF_MONTH-1]</param>
 	</site>
 	<site id="HKTL3">
 		<terminal>HKTL</terminal>
@@ -64,6 +70,9 @@
 		<url>https://custom.hktl.com/jsp/T01/sunsuk.jsp</url>
 		<encoding>euc-kr</encoding>
 		<param key="currentPage">3</param>
+		<param key="year">[SYSDATE.YEAR-1]</param>
+		<param key="month">[SYSDATE.MONTH-1]</param>
+		<param key="day">[SYSDATE.DAY_OF_MONTH-1]</param>
 	</site>
 	
 	<site id="PNC">
