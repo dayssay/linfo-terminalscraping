@@ -29,6 +29,7 @@ import static linfo.project.util.Util.*;
 
 public class Driver implements Job {
 	
+	// 종호형.. 테스트좀 할게요..
 	private final String insRawHtml = "INSERT INTO T_RAW_HTML(SCRAP_ITEM, SCRAP_DT, SCRAP_TM, SITE_ID, HTML) "
 									+ " VALUES(?, ?, ?, ?, ?)";
 	
