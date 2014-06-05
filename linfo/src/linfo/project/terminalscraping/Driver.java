@@ -29,8 +29,8 @@ import static linfo.project.util.Util.*;
 
 public class Driver implements Job {
 	
-	private final String insRawHtml = "INSERT INTO T_RAW_HTML(SCRAP_DT, SCRAP_TM, TERMINAL_ID, HTML) "
-									+ " VALUES(?, ?, ?, ?)";
+	private final String insRawHtml = "INSERT INTO T_RAW_HTML(SCRAP_ITEM, SCRAP_DT, SCRAP_TM, SITE_ID, HTML) "
+									+ " VALUES(?, ?, ?, ?, ?)";
 	
 	private final String insVslSchdlHis = "INSERT INTO T_VESSEL_SCHEDULE_HISTORY "
 										+ " (INS_DT, INS_TM, TERMINAL_ID, BERTH_NO, OPR"
@@ -87,10 +87,11 @@ public class Driver implements Job {
 						String htmlCode = s.getHtml(t);
 						
 						PreparedStatement pstmt = conn.prepareStatement(this.insRawHtml);
-						pstmt.setString(1, getSystemDate());
-						pstmt.setString(2, getSystemTime());
-						pstmt.setString(3, t.getTerminalId());
-						pstmt.setString(4, htmlCode);
+						pstmt.setString(1, item);
+						pstmt.setString(2, getSystemDate());
+						pstmt.setString(3, getSystemTime());
+						pstmt.setString(4, t.getId());
+						pstmt.setString(5, htmlCode);
 						pstmt.executeUpdate();
 						pstmt.close();
 						
