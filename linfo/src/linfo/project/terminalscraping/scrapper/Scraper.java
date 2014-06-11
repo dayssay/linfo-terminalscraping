@@ -30,11 +30,12 @@ public class Scraper {
 	private final String ITEM_FILE_NAME = "scrap-list.xml";
 	
 //	scrap 항목별 수집 terminal 목록
-	private final String TERMINAL_LIST_FILE_NAME = "terminal-list.xml";
+	private final String TERMINAL_LIST_FILE_NAME = "site-list.xml";
 	
 	private HashMap<String, String>items;
 	ArrayList<TerminalWebSite> terminalList;
 	private String filePath;
+	private HashMap<Integer, String> params;
 	
 	
 	public Scraper() throws IOException{
@@ -43,6 +44,7 @@ public class Scraper {
 		this.filePath = new File(".").getCanonicalPath() + "/cfg/";
 		
 		items = new HashMap<>();
+		params = new HashMap<>();
 		terminalList = new ArrayList<>();
 		this.setItems();
 	}
@@ -68,6 +70,9 @@ public class Scraper {
 	
 	
 	
+	public void addParam(int index, String value){
+		this.params.put(index, value);
+	}
 	
 	public ArrayList<String> getItems(){
 		return Util.getKeyList(this.items);
@@ -82,7 +87,7 @@ public class Scraper {
 	*/
 	private void setTerminalList(String item){
 		try{
-			Document terminalDoc = Util.getXMLDocument(this.filePath + this.TERMINAL_LIST_FILE_NAME);;
+			Document terminalDoc = Util.getXMLDocument(this.filePath + this.TERMINAL_LIST_FILE_NAME);
 			NodeList itemNode = terminalDoc.getElementsByTagName(this.items.get(item));
 			
 			NodeList siteNode = ((Element)itemNode.item(0)).getElementsByTagName("site");
@@ -134,6 +139,11 @@ public class Scraper {
 						value = getDateAfter(Calendar.DAY_OF_MONTH, Integer.parseInt(value.replace("[SYSDATE.DAY_OF_MONTH", "").replace("]", "").trim()));
 					}else if (value.contains("[SYSDATE")){
 						value = getDateAfter(Integer.parseInt(value.replace("[SYSDATE", "").replace("]", "").trim()));
+					}
+					
+					if (value.contains("{[") && value.contains("]}")){
+						String sIndex = value.replace("{[", "").replace("]}", "");
+						value = this.params.get(Integer.parseInt(sIndex));
 					}
 					
 					t.putParam(paramElement.getAttribute("key"), value);

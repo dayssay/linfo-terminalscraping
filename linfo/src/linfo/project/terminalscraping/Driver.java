@@ -302,18 +302,32 @@ public class Driver implements Job {
 	
 	public static void main(String[] args){
 		try{
-			SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
-	
-			Scheduler sched = schedFact.getScheduler();
-			
-			sched.start();
-			JobDetail job = newJob(Driver.class).withIdentity("vesselScheduleJob", "vesselSchedule").build();
-			Trigger trigger = newTrigger().withIdentity("vesselScheduleTrigger", "vesselSchedule").withSchedule(cronSchedule("0 0,30 * * * ?")).forJob("vesselScheduleJob", "vesselSchedule").build();
-			
-			sched.scheduleJob(job, trigger);
+//			SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
+//	
+//			Scheduler sched = schedFact.getScheduler();
+//			
+//			sched.start();
+//			JobDetail job = newJob(Driver.class).withIdentity("vesselScheduleJob", "vesselSchedule").build();
+//			Trigger trigger = newTrigger().withIdentity("vesselScheduleTrigger", "vesselSchedule").withSchedule(cronSchedule("0 0,30 * * * ?")).forJob("vesselScheduleJob", "vesselSchedule").build();
+//			
+//			sched.scheduleJob(job, trigger);
 			
 //			Driver d = new Driver();
 //			d.scrapVesselSchedule();
+			
+			Scraper s = new Scraper();
+//			s.addParam(1, "NCCU1283719"); //bit
+			s.addParam(1, "EISU5805440"); //dpct
+			for(String item : s.getItems()){
+				if(item.equals("ContainerInformation")){
+					for(TerminalWebSite t : s.getTerminalList(item)){
+						if (t.getTerminalId().equals("DPCT")){
+							System.out.println("==================" + t.getTerminalId() + "==================");
+							System.out.println(s.getHtml(t));
+						}
+					}
+				}
+			}
 		}catch(Exception e){
 			Util.exceptionProc(e);
 		}

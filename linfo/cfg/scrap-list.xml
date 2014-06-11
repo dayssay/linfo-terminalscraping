@@ -3,4 +3,5 @@
 
 <scrap-list>
 	<scrap item="VesselSchedule">vessel-schedule-list</scrap>
+	<scrap item="ContainerInformation">container-information-list</scrap>
 </scrap-list>
