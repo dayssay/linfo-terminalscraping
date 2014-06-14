@@ -2,8 +2,10 @@ package linfo.project.terminalscraping.containerinfo.parser;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
+import linfo.project.terminalscraping.objects.ContainerInformation;
 import linfo.project.util.Util;
 
 public class DPCTContainerInfoParser extends ContainerInfoParser{
@@ -69,9 +71,10 @@ public class DPCTContainerInfoParser extends ContainerInfoParser{
 	private static final int DELIVERY_STATUS2 = 58;
 	private static final int FINISH = 59;
 	
-	private List<Integer> skipIndex;
+	private ArrayList<Integer> skipIndex;
 	
 	public DPCTContainerInfoParser(){
+		skipIndex = new ArrayList<Integer>();
 		skipIndex.add(CNTR_NO_TITLE);
 		skipIndex.add(SIZE_TYPE_TITLE);
 		skipIndex.add(VVD_TITLE);
@@ -103,8 +106,9 @@ public class DPCTContainerInfoParser extends ContainerInfoParser{
 	}
 	
 	@Override
-	public void SetContainerInfo(String pHtml){
+	public ContainerInformation extractContainerInformation(String pHtml){
         BufferedReader buffer;
+        ContainerInformation ci = new ContainerInformation(); 
         
         try{
             StringReader sr = new StringReader(pHtml);
@@ -119,47 +123,58 @@ public class DPCTContainerInfoParser extends ContainerInfoParser{
             	
             	if(line.contains("#3A74A0") || line.contains("darkred")){
             		if(skipIndex.indexOf(idx) < 0){
+//            			System.out.println(line);
+            			
             			switch(idx){
             				case CNTR_NO:
             					System.out.println(getCntr_no(line));
+            					ci.setCntr_no(getCntr_no(line));
             					break;
             				case SIZE_TYPE:
-            					System.out.println(getCntr_no(line));
+            					System.out.println(getCntr_siz(line));
+            					System.out.println(getCntr_typ(line));
             					break;
             				case VVD:
-            					System.out.println(getCntr_no(line));
+            					System.out.println(getVvd_year(line));
+            					System.out.println(getVsl_cod(line));
+            					System.out.println(getVvd(line));
             					break;
             				case VSL_NAME:
-            					System.out.println(getCntr_no(line));
+            					System.out.println(getVsl_name(line));
             					break;
             				case OPR:
-            					System.out.println(getCntr_no(line));
+            					System.out.println(getOpr(line));
             					break;
             				case OPR_NAME:
-            					System.out.println(getCntr_no(line));
+            					System.out.println(getOpr_name(line));
             					break;
             				case STATUS:
-            					System.out.println(getCntr_no(line));
+            					System.out.println(getCls(line));
+            					System.out.println(getSts(line));
+            					System.out.println(getCntr_foe(line));
             					break;
             				case TS:
-            					System.out.println(getCntr_no(line));
+            					System.out.println(getTs(line));
             					break;
             				case RETURN_CANCEL:
-            					System.out.println(getCntr_no(line));
+            					System.out.println(getCnl(line));
             					break;
             				case SEAL_NO:
-            					System.out.println(getCntr_no(line));
+            					System.out.println(getSeal1(line));
             					break;
             				case TRUCK_NO:
-            					System.out.println(getCntr_no(line));
+            					System.out.println(getIn_truck(line));
             					break;
             				case WEIGHT:
-            					System.out.println(getCntr_no(line));
+            					System.out.println(getCntr_wgt(line));
             					break;
             				case IMDG:
-            					System.out.println(getCntr_no(line));
+            					System.out.println(getDg_imdg(line));
+            					System.out.println(getDg_unno(line));
+            					System.out.println(getDg_cls(line));
             					break;
             				case REEFER:
+            					// 일단 여기까지... 일단 자자.. 세시다.. ㅋ
             					System.out.println(getCntr_no(line));
             					break;
             				case VSL_LOCATION:
@@ -214,6 +229,7 @@ public class DPCTContainerInfoParser extends ContainerInfoParser{
             					System.out.println(getCntr_no(line));
             					break;
             			}
+            			
             		}
             		
             		idx++;
@@ -222,5 +238,7 @@ public class DPCTContainerInfoParser extends ContainerInfoParser{
         }catch (Exception e){
         	Util.exceptionProc(e);
         }
+        
+        return ci;
 	}
 }

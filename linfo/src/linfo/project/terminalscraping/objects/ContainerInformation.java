@@ -78,6 +78,8 @@ public class ContainerInformation {
 	private String cis;
 	private String xray;
 	private String remark;
+	private String in_truck;
+	private String out_truck;
 	
 	public ContainerInformation(){
 		this.terminal = "";                 
@@ -155,7 +157,9 @@ public class ContainerInformation {
 		this.customs = "";                 
 		this.cis = "";                          
 		this.xray = "";                       
-		this.remark = "";                   
+		this.remark = "";    
+		this.in_truck = "";
+		this.out_truck = "";
 	}
 	
 	public String getTerminal() {
@@ -613,6 +617,22 @@ public class ContainerInformation {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getIn_truck() {
+		return in_truck;
+	}
+
+	public void setIn_truck(String in_truck) {
+		this.in_truck = in_truck;
+	}
+
+	public String getOut_truck() {
+		return out_truck;
+	}
+
+	public void setOut_truck(String out_truck) {
+		this.out_truck = out_truck;
 	}
 
 }

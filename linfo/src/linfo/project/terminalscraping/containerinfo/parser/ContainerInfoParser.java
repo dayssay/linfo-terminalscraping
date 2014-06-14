@@ -19,8 +19,8 @@ public class ContainerInfoParser {
 	* @param html html 코드
 	* @return ArrayList<ContainerInformation> 모선 입항 정보 ArrayList
 	*/
-	public ArrayList<ContainerInformation> extractContainerInformation(String html){
-		return new ArrayList<>();
+	public ContainerInformation extractContainerInformation(String html){
+		return new ContainerInformation();
 	}
 	
 	
@@ -31,8 +31,8 @@ public class ContainerInfoParser {
 	*/
 	private String getData(String html){
 		String[] sTemp = html.split(">");
-		if(sTemp.length > 1)
-			return (sTemp[1].split("<"))[0].replace("&nbsp;", "").trim();
+		if(sTemp.length > 2)
+			return (sTemp[2].split("<"))[0].replace("&nbsp;", "").trim();
 		else
 			return "";
 	}
@@ -277,6 +277,12 @@ public class ContainerInfoParser {
 		return getData(html).trim();
 	}
 	protected String getRemark(String html) {
+		return getData(html).trim();
+	}
+	protected String getIn_truck(String html) {
+		return getData(html).trim();
+	}
+	protected String getOut_truck(String html) {
 		return getData(html).trim();
 	}
 }
