@@ -18,6 +18,7 @@ import static org.quartz.JobBuilder.*;
 import static org.quartz.TriggerBuilder.*;
 import static org.quartz.CronScheduleBuilder.*;
 import oracle.jdbc.pool.OracleDataSource;
+import linfo.project.terminalscraping.containerinfo.parser.DPCTContainerInfoParser;
 import linfo.project.terminalscraping.objects.TerminalWebSite;
 import linfo.project.terminalscraping.objects.VesselSchedule;
 import linfo.project.terminalscraping.objects.VesselSchedule.VVD_STATUS;
@@ -324,6 +325,8 @@ public class Driver implements Job {
 						if (t.getTerminalId().equals("DPCT")){
 							System.out.println("==================" + t.getTerminalId() + "==================");
 							System.out.println(s.getHtml(t));
+							DPCTContainerInfoParser dpct = new DPCTContainerInfoParser();
+							dpct.SetContainerInfo(s.getHtml(t));
 						}
 					}
 				}
