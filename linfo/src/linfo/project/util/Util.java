@@ -78,9 +78,11 @@ public class Util {
 	* 며칠 후 의 날자를 반환한다
 	* @return yyyymmdd
 	*/
-	public static String getDateAfter(int amount){
+	public static String getDateAfter(String amount){
+		if (amount == null || amount.length() == 0) amount = "0";
+		int intAmount = Integer.parseInt(amount);
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DAY_OF_MONTH, amount);
+		c.add(Calendar.DAY_OF_MONTH, intAmount);
 		return String.format("%04d", c.get(Calendar.YEAR)) 
 				+ String.format("%02d", c.get(Calendar.MONTH) + 1)
 				+ String.format("%02d", c.get(Calendar.DAY_OF_MONTH));
@@ -94,9 +96,11 @@ public class Util {
 	* @param amount 며칠 후 를 조회 할 것인가
 	* @return yyyy 또는 mm 또는 dd
 	*/
-	public static String getDateAfter(int field, int amount){
+	public static String getDateAfter(int field, String amount){
+		if (amount == null || amount.length() == 0) amount = "0";
+		int intAmount = Integer.parseInt(amount);
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DAY_OF_MONTH, amount);
+		c.add(Calendar.DAY_OF_MONTH, intAmount);
 		
 		if (field == Calendar.YEAR){
 			return String.format("%04d", c.get(Calendar.YEAR));
@@ -120,9 +124,11 @@ public class Util {
 	* @param amount 며칠 후 를 조회 할 것인가
 	* @return yyyy (separator) mm (separator) dd 의 형태(separator로 년,월,일 을 구분함)
 	*/
-	public static String getDateAfter(String separator, int amount){
+	public static String getDateAfter(String separator, String amount){
+		if (amount == null || amount.length() == 0) amount = "0";
+		int intAmount = Integer.parseInt(amount);
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DAY_OF_MONTH, amount);
+		c.add(Calendar.DAY_OF_MONTH, intAmount);
 		return String.format("%04d", c.get(Calendar.YEAR)) 
 				+ separator + String.format("%02d", c.get(Calendar.MONTH) + 1)
 				+ separator + String.format("%02d", c.get(Calendar.DAY_OF_MONTH));

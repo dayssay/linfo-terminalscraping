@@ -128,17 +128,17 @@ public class Scraper {
 					Element paramElement = (Element)paramNode.item(j);
 					String value = paramElement.getTextContent();
 					if (value.contains("[SYSDATE(-)")){
-						value = getDateAfter("-", Integer.parseInt(value.replace("[SYSDATE(-)", "").replace("]", "").trim()));
+						value = getDateAfter("-", value.replace("[SYSDATE(-)", "").replace("]", "").trim());
 					}else if (value.contains("[SYSDATE(/)")){
-						value = getDateAfter("/", Integer.parseInt(value.replace("[SYSDATE(/)", "").replace("]", "").trim()));
+						value = getDateAfter("/", value.replace("[SYSDATE(/)", "").replace("]", "").trim());
 					}else if (value.contains("[SYSDATE.YEAR")){
-						value = getDateAfter(Calendar.YEAR, Integer.parseInt(value.replace("[SYSDATE.YEAR", "").replace("]", "").trim()));
+						value = getDateAfter(Calendar.YEAR, value.replace("[SYSDATE.YEAR", "").replace("]", "").trim());
 					}else if (value.contains("[SYSDATE.MONTH")){
-						value = getDateAfter(Calendar.MONTH, Integer.parseInt(value.replace("[SYSDATE.MONTH", "").replace("]", "").trim()));
+						value = getDateAfter(Calendar.MONTH, value.replace("[SYSDATE.MONTH", "").replace("]", "").trim());
 					}else if (value.contains("[SYSDATE.DAY_OF_MONTH")){
-						value = getDateAfter(Calendar.DAY_OF_MONTH, Integer.parseInt(value.replace("[SYSDATE.DAY_OF_MONTH", "").replace("]", "").trim()));
+						value = getDateAfter(Calendar.DAY_OF_MONTH, value.replace("[SYSDATE.DAY_OF_MONTH", "").replace("]", "").trim());
 					}else if (value.contains("[SYSDATE")){
-						value = getDateAfter(Integer.parseInt(value.replace("[SYSDATE", "").replace("]", "").trim()));
+						value = getDateAfter(value.replace("[SYSDATE", "").replace("]", "").trim());
 					}
 					
 					if (value.contains("{[") && value.contains("]}")){

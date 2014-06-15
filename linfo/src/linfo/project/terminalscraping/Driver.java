@@ -318,11 +318,15 @@ public class Driver implements Job {
 			
 			Scraper s = new Scraper();
 //			s.addParam(1, "NCCU1283719"); //bit
-			s.addParam(1, "EISU5805440"); //dpct
+//			s.addParam(1, "EISU5805440"); //dpct
+//			s.addParam(1, "CXDU1713476"); //hktl
+//			PNC, PNIT Test 데이터 없음
+//			s.addParam(1, "AMFU3271777"); //HPNT
+			
 			for(String item : s.getItems()){
 				if(item.equals("ContainerInformation")){
 					for(TerminalWebSite t : s.getTerminalList(item)){
-						if (t.getTerminalId().equals("DPCT")){
+						if (t.getTerminalId().equals("HPNT")){
 							System.out.println("==================" + t.getTerminalId() + "==================");
 							System.out.println(s.getHtml(t));
 							DPCTContainerInfoParser dpct = new DPCTContainerInfoParser();
