@@ -1,4 +1,4 @@
-package linfo.project.terminalscraping.containerinfo.parser;
+package linfo.project.terminalscraping.parser.containerinfo;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

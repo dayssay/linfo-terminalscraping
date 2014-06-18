@@ -1,4 +1,4 @@
-package linfo.project.terminalscraping.vesselschedule.parser;
+package linfo.project.terminalscraping.parser.vesselschedule;
 
 import java.io.BufferedReader;
 import java.io.StringReader;

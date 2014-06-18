@@ -1,4 +1,4 @@
-package linfo.project.terminalscraping.vesselschedule.parser;
+package linfo.project.terminalscraping.parser.vesselschedule;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
@@ -8,19 +8,18 @@ import linfo.project.terminalscraping.objects.VesselSchedule;
 import linfo.project.terminalscraping.objects.VesselSchedule.VVD_STATUS;
 import linfo.project.util.Util;
 
-public class HPNTVesselScheduleParser extends VesselScheduleParser{
+public class PNCVesselScheduleParser extends VesselScheduleParser{
 
-	private String g_sBerth = "FFFAC4";
-	private String g_sDepart = "e0e0e0";
-	private String g_sPlan = "6FB7E9";
-	private String g_sRealPlan = "9DCEFF";
+	private String g_sBerth = "DEF2FC";
+	private String g_sDepart = "F2E3ED";
+	private String g_sPlan = "FFFFFF";
+	
 	
 	@Override
 	public void SetBerthInfo(String pHtml){
         BufferedReader buffer;
         
-        try
-        {
+        try{
             StringReader sr = new StringReader(pHtml);
             buffer = new BufferedReader(sr);
             
@@ -28,37 +27,42 @@ public class HPNTVesselScheduleParser extends VesselScheduleParser{
             int iStart = 0;
             
             while((line = buffer.readLine()) != null){
-            	if(line.contains(g_sBerth) || line.contains(g_sDepart) || line.contains(g_sPlan) || line.contains(g_sRealPlan)){
+            	if(line.contains(g_sBerth) || line.contains(g_sDepart) || line.contains(g_sPlan)){
 
-            		if(iStart < 1){
+            		if(iStart < 2){
             			buffer.readLine();
             			buffer.readLine();
             		}
             		
             		iStart++;
             		
-            		if (iStart > 1){
-            			buffer.readLine();
-            			System.out.print(getVVDStatus(buffer.readLine())+"*");
-            			buffer.readLine();
-            			System.out.print(getBerthNo(buffer.readLine())+"*");
-            			System.out.print(getOPR(buffer.readLine())+"*");
-            			System.out.print(getVVD(buffer.readLine())+"*");
-            			String sINOUTVVD = buffer.readLine();
+            		if (iStart > 2)
+            		{
+            			System.out.print(getVVDStatus(line)+"*");
+            			if(line.contains(g_sBerth)){
+            				buffer.readLine();
+            				buffer.readLine();
+            			}
+            				
+            			if(line.contains(g_sDepart))
+            				buffer.readLine();
+            			
+            			buffer.readLine();		// Empty Space..
+            			buffer.readLine();		// No.
+    					System.out.print(getVSLName(buffer.readLine())+"*");
+    					System.out.print(getVVD(buffer.readLine())+"*");
+    					String sINOUTVVD = buffer.readLine();
     					System.out.print(getINVVDforShippingCom(sINOUTVVD)+"*");
     					System.out.print(getOUTVVDforShippingCom(sINOUTVVD)+"*");
-    					System.out.print(getVSLName(buffer.readLine())+"*");
-    					System.out.print(getCCT(buffer.readLine())+"*");
-    					buffer.readLine();
-    					buffer.readLine();
-    					buffer.readLine();
+    					System.out.print(getOPR(buffer.readLine())+"*");
+    					System.out.print(getRoute(buffer.readLine())+"*");
+    					buffer.readLine();		// Berthing Direction
     					System.out.print(getETB(buffer.readLine())+"*");
     					System.out.print(getETD(buffer.readLine())+"*");
-    					String sJobCnt = buffer.readLine();
-    					System.out.print(getDISCnt(sJobCnt)+"*");
-    					System.out.print(getLOADCnt(sJobCnt)+"*");
-    					System.out.print(getShiftCnt(sJobCnt)+"*");
-    					System.out.print(getRoute(buffer.readLine())+"*");
+    					System.out.print(getBerthNo(buffer.readLine())+"*");
+    					System.out.print(getCCT(buffer.readLine())+"*");
+    					System.out.print(getDISCnt(buffer.readLine())+"*");
+    					System.out.print(getLOADCnt(buffer.readLine())+"*");
     					System.out.println("");
             		}
             	}
@@ -67,6 +71,7 @@ public class HPNTVesselScheduleParser extends VesselScheduleParser{
         	Util.exceptionProc(e);
         } 
 	}
+	
 	
 	
 	
@@ -86,45 +91,48 @@ public class HPNTVesselScheduleParser extends VesselScheduleParser{
             int iStart = 0;
             
             while((line = buffer.readLine()) != null){
-            	if(line.contains(g_sBerth) || line.contains(g_sDepart) || line.contains(g_sPlan) || line.contains(g_sRealPlan)){
-
-            		if(iStart < 1){
+            	if(line.contains(g_sBerth) || line.contains(g_sDepart) || line.contains(g_sPlan)){
+            		
+            		if(iStart < 2){
             			buffer.readLine();
             			buffer.readLine();
             		}
             		
             		iStart++;
             		
-            		if (iStart > 1){
+            		if (iStart > 2)
+            		{
             			VesselSchedule vs = new VesselSchedule();
             			
-            			buffer.readLine();
-            			String vvdStatus = getVVDStatus(buffer.readLine());
-            			if (vvdStatus.contains("DEPART")){
-            				vs.setVvdStatus(VVD_STATUS.DEPARTED);
-            			}else if (vvdStatus.contains("BERTH")){
+            			if (getVVDStatus(line).equals("Berth")){
             				vs.setVvdStatus(VVD_STATUS.BERTHING);
-            			}else if (vvdStatus.contains("PLAN")){
+            			}else if (getVVDStatus(line).equals("Depart")){
+            				vs.setVvdStatus(VVD_STATUS.DEPARTED);
+            			}else if (getVVDStatus(line).equals("Plan")){
             				vs.setVvdStatus(VVD_STATUS.PLANNED);
-            			}else {
+            			}else{
             				vs.setVvdStatus(VVD_STATUS.UNKNOWN);
             			}
             			
-            			buffer.readLine();
-            			vs.setBerthNo(getBerthNo(buffer.readLine()));
-            			vs.setOpr(getOPR(buffer.readLine()));
+            			if(line.contains(g_sBerth)){
+            				buffer.readLine();
+            				buffer.readLine();
+            			}
+            				
+            			if(line.contains(g_sDepart))
+            				buffer.readLine();
             			
-            			String tmpVvd = getVVD(buffer.readLine());
-            			vs.setVvd(tmpVvd.substring(0, 4) + "-" + String.format("%03d", Integer.parseInt(tmpVvd.substring(4, 6))));
-            			
-            			String sINOUTVVD = buffer.readLine();
-            			vs.setInVvdForShippingCom(getINVVDforShippingCom(sINOUTVVD));
-            			vs.setOutVvdForShippingCom(getOUTVVDforShippingCom(sINOUTVVD));
+            			buffer.readLine();		// Empty Space..
+            			buffer.readLine();		// No.
             			vs.setVslName(getVSLName(buffer.readLine()));
-            			vs.setCct(getCCT(buffer.readLine()));
-    					buffer.readLine();
-    					buffer.readLine();
-    					buffer.readLine();
+            			vs.setVvd(getVVD(buffer.readLine()));
+    					String sINOUTVVD = buffer.readLine();
+    					vs.setInVvdForShippingCom(getINVVDforShippingCom(sINOUTVVD));
+    					vs.setOutVvdForShippingCom(getOUTVVDforShippingCom(sINOUTVVD));
+    					vs.setOpr(getOPR(buffer.readLine()));
+    					vs.setRoute(getRoute(buffer.readLine()));
+    					buffer.readLine();		// Berthing Direction
+    					
     					
     					if(vs.getVvdStatus() == VVD_STATUS.PLANNED){
     						vs.setEtb(getETB(buffer.readLine()));
@@ -142,11 +150,12 @@ public class HPNTVesselScheduleParser extends VesselScheduleParser{
     						vs.setEtd(getETD(buffer.readLine()));
     					}
     					
-    					String sJobCnt = buffer.readLine();
-    					vs.setDisCnt(Integer.parseInt(getDISCnt(sJobCnt)));
-    					vs.setLoadCnt(Integer.parseInt(getLOADCnt(sJobCnt)));
-    					vs.setShiftCnt(Integer.parseInt(getShiftCnt(sJobCnt)));
-    					vs.setRoute(getRoute(buffer.readLine()));
+    					vs.setBerthNo(getBerthNo(buffer.readLine()));
+    					vs.setCct(getCCT(buffer.readLine()));
+    					
+    					vs.setDisCnt(Integer.parseInt(getDISCnt(buffer.readLine()).trim()));
+    					vs.setLoadCnt(Integer.parseInt(getLOADCnt(buffer.readLine()).trim()));
+    					
     					vesselScheduleList.add(vs);
             		}
             	}
@@ -155,9 +164,9 @@ public class HPNTVesselScheduleParser extends VesselScheduleParser{
         	Util.exceptionProc(e);
         } 
 		
-		
 		return vesselScheduleList;
 	}
+
 
 
 
@@ -183,7 +192,7 @@ public class HPNTVesselScheduleParser extends VesselScheduleParser{
 		if(sTemp.length > 1){
 			String[] sVVD = (sTemp[1].split("<"))[0].split("/");
 			if(sVVD.length > 1)
-				return sVVD[1].trim();
+				return sVVD[1];
 			else
 				if(sTemp[1].indexOf("/") == 0)
 					return sVVD[0];
@@ -196,14 +205,23 @@ public class HPNTVesselScheduleParser extends VesselScheduleParser{
 	
 	@Override
 	protected String getVVDStatus(String pHtml) {
-		return pHtml.trim();
+		String[] sTemp = pHtml.split("#");
+		if(sTemp.length > 1)
+			if(sTemp[1].substring(0, 6).equals(g_sBerth))
+				return "Berth";
+			else if(sTemp[1].substring(0, 6).equals(g_sDepart))
+				return "Depart";
+			else
+				return "Plan";
+		else
+			return "";
 	}
 	
-	
+	@Override
 	protected String getShiftCnt(String pHtml) {
 		String[] sTemp = pHtml.split(">");
 		if(sTemp.length > 1)
-			return ((sTemp[1].split("<"))[0].split("/"))[2];
+			return ((sTemp[1].split("/"))[2].split("<"))[0].trim();
 		else
 			return "";
 	}
@@ -212,25 +230,7 @@ public class HPNTVesselScheduleParser extends VesselScheduleParser{
 	protected String getRoute(String pHtml) {
 		String[] sTemp = pHtml.split(">");
 		if(sTemp.length > 2)
-			return (sTemp[3].split("<"))[0];
-		else
-			return "";
-	}
-	
-	@Override
-	protected String getLOADCnt(String pHtml) {
-		String[] sTemp = pHtml.split(">");
-		if(sTemp.length > 1)
-			return ((sTemp[1].split("<"))[0].split("/"))[1];
-		else
-			return "";
-	}
-	
-	@Override
-	protected String getDISCnt(String pHtml) {
-		String[] sTemp = pHtml.split(">");
-		if(sTemp.length > 1)
-			return ((sTemp[1].split("<"))[0].split("/"))[0];
+			return (sTemp[2].split("<"))[0];
 		else
 			return "";
 	}

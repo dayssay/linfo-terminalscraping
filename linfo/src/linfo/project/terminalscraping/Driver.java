@@ -18,15 +18,18 @@ import static org.quartz.JobBuilder.*;
 import static org.quartz.TriggerBuilder.*;
 import static org.quartz.CronScheduleBuilder.*;
 import oracle.jdbc.pool.OracleDataSource;
-import linfo.project.terminalscraping.containerinfo.parser.DPCTContainerInfoParser;
-import linfo.project.terminalscraping.objects.TerminalWebSite;
 import linfo.project.terminalscraping.objects.VesselSchedule;
 import linfo.project.terminalscraping.objects.VesselSchedule.VVD_STATUS;
+import linfo.project.terminalscraping.parser.containerinfo.DPCTContainerInfoParser;
+import linfo.project.terminalscraping.parser.vesselschedule.VesselScheduleParser;
+import linfo.project.terminalscraping.parser.vesselschedule.VesselScheduleParserFactory;
 import linfo.project.terminalscraping.scrapper.Scraper;
-import linfo.project.terminalscraping.vesselschedule.parser.VesselScheduleParser;
-import linfo.project.terminalscraping.vesselschedule.parser.VesselScheduleParserFactory;
-import linfo.project.util.Util;
-import static linfo.project.util.Util.*;
+import linfo.project.terminalscraping.scrapper.WebSite;
+
+import static linfo.project.util.Util.exceptionProc;
+import static linfo.project.util.Util.getSystemDate;
+import static linfo.project.util.Util.getSystemTime;
+import static linfo.project.util.Util.getSystemDateTime;
 
 public class Driver implements Job {
 	
@@ -80,7 +83,7 @@ public class Driver implements Job {
 				stmt.execute("DELETE T_VESSEL_SCHEDULE_PROC WHERE VVD_STATUS = '" + VVD_STATUS.DEPARTED.name() + "'");
 				stmt.close();
 				
-				for(TerminalWebSite t : s.getTerminalList(item)){
+				for(WebSite t : s.getTerminalList(item)){
 					//각 터미널 ID에 맞는 VesselScheduleParser를 가져옴
 					VesselScheduleParser parser = new VesselScheduleParserFactory().getParser(t.getTerminalId());
 					
@@ -318,15 +321,15 @@ public class Driver implements Job {
 			
 			Scraper s = new Scraper();
 //			s.addParam(1, "NCCU1283719"); //bit
-//			s.addParam(1, "EISU5805440"); //dpct
+			s.addParam(1, "EISU5805440"); //dpct
 //			s.addParam(1, "CXDU1713476"); //hktl
 //			PNC, PNIT Test 데이터 없음
 //			s.addParam(1, "AMFU3271777"); //HPNT
 			
 			for(String item : s.getItems()){
 				if(item.equals("ContainerInformation")){
-					for(TerminalWebSite t : s.getTerminalList(item)){
-						if (t.getTerminalId().equals("HPNT")){
+					for(WebSite t : s.getTerminalList(item)){
+						if (t.getTerminalId().equals("DPCT")){
 							System.out.println("==================" + t.getTerminalId() + "==================");
 							System.out.println(s.getHtml(t));
 							DPCTContainerInfoParser dpct = new DPCTContainerInfoParser();
@@ -336,7 +339,7 @@ public class Driver implements Job {
 				}
 			}
 		}catch(Exception e){
-			Util.exceptionProc(e);
+			exceptionProc(e);
 		}
 		
 	}
@@ -348,7 +351,7 @@ public class Driver implements Job {
 		try {
 			scrapVesselSchedule();
 		} catch (Exception e) {
-			Util.exceptionProc(e);
+			exceptionProc(e);
 		}
 	}
 }

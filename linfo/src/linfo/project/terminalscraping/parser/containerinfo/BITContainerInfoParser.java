@@ -1,4 +1,4 @@
-package linfo.project.terminalscraping.containerinfo.parser;
+package linfo.project.terminalscraping.parser.containerinfo;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
